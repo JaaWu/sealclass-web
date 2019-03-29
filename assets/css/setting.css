@@ -1,0 +1,21 @@
+@charset "UTF-8";
+/* 
+此 scss 为设置项, 不直接引入页面
+ */
+@font-face {
+  font-family: colorEmojiFont;
+  src: local("Noto Color Emoji"), local("Apple Color Emoji"), local("Segoe UI Emoji");
+  unicode-range: U+1F300-1F5FF, U+1F900-1F9FF, U+1F600-1F64F, U+1F680-1F6FF, U+2600-26FF, U+2700-27BF, U+2300-23FF, U+1F000-1F02F, U+1F100-1F1FF, U+1F20-1F2FF, U+2122, U+2139, U+FE00-FE0F;
+}
+
+@font-face {
+  font-family: tickFont;
+  src: local("Microsoft YaHei"), local(sans-serif);
+  unicode-range: U+221a;
+}
+
+@font-face {
+  font-family: numberFont;
+  src: local("PingFangSC-Regular"), local(sans-serif);
+  unicode-range: U+0030-0039;
+}

@@ -1,0 +1,14 @@
+<div class="rong-recent-share-list">
+  <ul>
+    <li v-if="displayedUser" @click="displayUser">
+      <component is="rtc-user" :user="displayedUser" :isBanZoom="true" :isShowThumbnail="true"></component>
+    </li>
+    <li v-for="whiteboard, index in whiteboardList" @click="displayWB(whiteboard)">
+      <div class="rong-resource-list-whiteboard">
+        <span>
+          白板 {{index + 1}}
+        </span>
+      </div>
+    </li>
+  </ul>
+</div>

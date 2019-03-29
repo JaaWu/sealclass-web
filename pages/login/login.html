@@ -1,0 +1,54 @@
+<div class="rong-login">
+  <div class="rong-login-box">
+    <div class="rong-login-actual">
+      <div class="rong-login-content">
+        <div class="rong-login-logo">
+          <img src="assets/img/login-logo.png">
+        </div>
+        <div class="rong-login-input-box">
+          <input v-model="roomId" @keydown="keydown" :class="{ 'rong-login-input-error': errors.classId }" name="classId" class="rong-login-input" type="text" autocomplete="off"
+            :placeholder="locale.login.classId" 
+            data-rule-required="true" :data-message-required="locale.login.classEmptyError" data-rule-classlength="true" data-rule-handlesymbol="true" 
+            data-rule-isnotchinese="true" 
+            :data-message-classlength="locale.login.roomLengthError" :data-message-handlesymbol="locale.login.roomLengthError" 
+            :data-message-isnotchinese="locale.login.roomLengthError"
+            @blur="filterRoomId">
+          <span v-if="errors.classId">{{errors.classId}}</span>
+        </div>
+        <div class="rong-login-input-box">
+          <input v-model="userName" @keydown="keydown" name="username" :class="{ 'rong-login-input-error': errors.username }" class="rong-login-input" type="text" autocomplete="off" :placeholder="locale.login.name" 
+          data-rule-required="true" :data-message-required="locale.login.nameEmptyError" data-rule-namelength="true" :data-message-namelength="locale.login.nameLengthError"
+          data-rule-handlesymbol="true" :data-message-handlesymbol="locale.login.nameLengthError"
+          @blur="filterUserName">
+          <span v-if="errors.username">{{errors.username}}</span>
+        </div>
+        <div class="rong-login-check-box">
+          <input id="isAudience" name="isAudience" type="checkbox" v-model="isAudience"><label for="isAudience"></label><span>{{locale.login.listener}}</span>
+          <!-- <input id="isVideoClosed" name="isVideoClosed" type="checkbox" v-model="isVideoClosed"><label for="isVideoClosed"></label><span>{{locale.login.closeVideo}}</span> -->
+        </div>
+        <div class="rong-login-enter">
+          <div v-if="isLoading" class="rong-login-loading-box">
+            <div class="rong-login-loading"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+            <span>正在进入</span>
+          </div>
+          <button v-else :disabled="!isValid" @click="entryClass">{{locale.login.join}}</button>
+        </div>
+      </div>
+      <img class="rong-login-pic" src="assets/img/login-content.png">
+    </div>
+
+    <div class="rong-opt-resolution">
+      <div class="rong-resolution-wrap">
+        <ul>
+          <li>{{locale.login.resolution}}</li>
+          <li v-for="resolutionValue in resolutionList">
+            <input type="radio" :checked="isResolutionSelected(resolutionValue)">
+            <label @click="resolution = resolutionValue"></label>
+            <span>{{resolutionValue.width}} * {{resolutionValue.height}}</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</div>

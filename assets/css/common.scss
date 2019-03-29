@@ -1,0 +1,391 @@
+@import './setting.scss';
+
+$greenBtnBack: linear-gradient(to right,rgb(4, 189, 180), rgb(12, 220, 155));
+$dialogDefaultLeft: calc((100% - 300px) / 2);
+
+/* 10px */
+.transFont10 {
+  font-size: 12px;
+  transform: scale(0.8);
+}
+
+html, body {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: $fontfamily;
+  font-weight: 200;
+  color: #333;
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    outline: 0;
+    background-repeat: no-repeat;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-weight: normal;
+    font-size: 100%;
+  }
+  ul, ol, li {
+    list-style: none;
+  }
+  a {
+    color: #333;
+    text-decoration: none;
+    &:hover {
+      color: $rongBlue;
+    }
+  }
+  img {
+    border: 0;
+  }
+  em {
+    font-style: normal;
+  }
+  mark {
+    background: none;
+    color: $rongBlue;
+  }
+  video {
+    background-color: black;
+  }
+  button, input, select {
+    font-family: $fontfamily;
+    font-size: 100%;
+  }
+  textarea {
+    font-family: $fontfamily;
+  }
+  button {
+    cursor: pointer;
+    &[disabled] {
+        cursor: default;
+    }
+  }
+
+  .rong-rtc-user-role {
+    position: absolute;
+    left: 6px;
+    top: 6px;
+    padding: 4px 7px;
+    border-radius: 10px;
+    color: white;
+    z-index: 11;
+    line-height: 1;
+    @extend .transFont10;
+  }
+
+  .rong-role-oval-1 {
+    background-color: $managerColor;
+  }
+
+  .rong-role-oval-2 {
+    background-color: $teacherColor;
+  }
+  .rong-role-oval-3 {
+    display: none;
+  }
+}
+.rong-class {
+  cursor: default;
+  position: relative;
+  height: 100%;
+  width: 100%;
+  min-width: 1100px;
+  min-height: 700px;
+}
+
+.rong-dialog-box {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  opacity: 1;
+  z-index: 500;
+  color: #333;
+  .rong-dialog {
+    position: fixed;
+    // @extend .transCenter;
+    // left: $dialogDefaultLeft;
+    background-color: rgb(254, 254, 254);
+    border: 1px solid rgb(230, 230, 230);
+    border-radius: 5px;
+    box-shadow: 5px 5px 7px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    z-index: 12;
+    font-weight: 4000;
+  }
+}
+
+.rong-dialog-shadow-layer {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  opacity: 1;
+  z-index: 100;
+  color: #333;
+}
+
+.rong-dialog {
+  position: fixed;
+  top: 50%;
+  // left: 50%;
+  left: $dialogDefaultLeft;
+  transform: translate(-50%, -50%);
+  background-color: rgb(254, 254, 254);
+  border: 1px solid rgb(230, 230, 230);
+  border-radius: 5px;
+  box-shadow: 5px 5px 7px rgba(0, 0, 0, 0.1);
+  padding: 13px;
+  z-index: 101;
+  font-weight: 400;
+  font-size: 14px;
+  width: 330px;
+  h3 {
+    margin-bottom: 42px;
+  }
+  .rong-dialog-user {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 36px;
+    height: 36px;
+    vertical-align: middle;
+  }
+  .rong-dialog-user-content {
+    padding-left: 55px;
+  }
+  .rong-dialog-content-box {
+    width: 100%;
+    vertical-align: middle;
+    position: relative;
+    padding-left: 10px;
+    overflow: hidden;
+    // .rong-dialog-content {
+    //   vertical-align: middle;
+    // }
+  }
+  .rong-dialog-btns {
+    float: right;
+    margin-top: 39px;
+    button {
+      display: inline-block;
+      padding: 3px 15px;
+      height: 27px;
+      border: none;
+      font-size: 12px;
+      border-radius: 5px;
+      margin-left: 10px;
+      background: $greenBtnBack;
+      border: none;
+      border: 1px solid transparent;
+    }
+    button.rong-dialog-btn-confirm {
+      color: white;
+    }
+    button.rong-dialog-btn-cancel {
+      background: rgb(249, 249, 249);
+      border: 1px solid rgb(151, 151, 151);
+    }
+  }
+}
+.rong-dialog-call {
+  width: 308px;
+  height: 52px;
+  .rong-dialog-content {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  .rong-dialog-call-btns {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    margin: 0;
+    button {
+      display: inline-block;
+      width: 28px;
+      height: 28px;
+      border: none;
+      border-radius: 50%;
+      background-image: url(../img/icons.svg);
+      vertical-align: middle;
+    }
+    .rong-dialog-btn-accept {
+      background-position: -33px -264px;
+    }
+    .rong-dialog-btn-reject {
+      background-position: -67px -264px;
+    }
+  }
+  .rong-dialog-user-content {
+    padding-left: 45px;
+  }
+}
+
+.rong-dialog-down_grade {
+  .rong-dialog-user-content {
+    margin-top: 13px;
+  }
+  .rong-dialog-user-content {
+    padding-left: 45px;
+  }
+  .rong-dialog-downgrade-btns {
+    margin-top: 12px;
+  }
+  .rong-dialog-btns button {
+    padding: 3px 10px;
+  }
+}
+
+.rong-dialog-alert {
+  .rong-dialog-content-box {
+    text-align: center;
+    height: 84px;
+    line-height: 84px;
+    padding-left: 0;
+  }
+  .rong-dialog-alert-mark {
+    width: 30px;
+    height: 30px;
+    display: inline-block;
+    vertical-align: middle;
+    background-image: url('../img/icons.svg');
+    background-position: 0 -263px;
+    margin-right: 10px;
+  }
+  .rong-dialog-content {
+    display: inline-block;
+  }
+}
+
+.rong-dialog-loading {
+  width: 300px;
+  height: 70px;
+  text-align: center;
+  .rong-dialog-content-box {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 0;
+    padding: 0;
+  }
+  .rong-dialog-content {
+    display: inline-block;
+    vertical-align: middle;
+  }
+  .rong-dialog-loading-box {
+    display: inline-block;
+    position: relative;
+    width: 26px;
+    height: 24px;
+    vertical-align: middle;
+    margin-right: 10px;
+    div {
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background:rgb(2, 195, 171);
+      animation: lds-grid 1.2s linear infinite;
+    }
+    div:nth-child(1) {
+      top: 2%;
+      left: 55%;
+      transform: translateX(-50%);
+      animation-delay: 0s;
+    }
+    div:nth-child(2) {
+      top: 52%;
+      transform: translateY(-50%);
+      left: 0;
+      animation-delay: -0.4s;
+    }
+    div:nth-child(3) {
+      bottom: 2%;
+      left: 46%;
+      transform: translateX(-50%);
+      animation-delay: -0.8s;
+    }
+    div:nth-child(4) {
+      top: 48%;
+      transform: translateY(-50%);
+      right: 0;
+      animation-delay: -0.4s;
+    }
+    @keyframes lds-grid {
+      0%, 100% {
+        opacity: 1;
+      }
+      50% {
+        opacity: 0.5;
+      }
+    }
+  }
+}
+
+.rong-dialog-toast {
+  text-align: center;
+  width: auto;
+  // top: 116px;
+  padding: 12px 50px;
+  .rong-dialog-toast-content {
+    display: inline-block;
+    font-size: 14px;
+    vertical-align: middle;
+  }
+}
+
+.rong-dialog-ontop {
+  .rong-dialog {
+    top: 116px;
+  }
+}
+
+.rong-dialog-create-db {
+  padding: 0;
+  width: auto;
+  min-width: 280px;
+  font-size: 12px;
+  h3 {
+    height: 48px;
+    background-color: #FAFAFA;
+    color: #262E42;
+    margin: 0;
+    padding-left: 15px;
+    line-height: 48px;
+  }
+  ul.rong-dialog-wb-list {
+    text-align: center;
+    margin: 12px 0;
+  }
+  ul li {
+    padding: 13px 20px 7px 20px;
+    text-align: center;
+    display: inline-block;
+    border: 1px solid rgb(0, 230, 162);
+    cursor: pointer;
+    .rong-dialog-wb-icon {
+      width: 70px;
+      height: 78px;
+      border: 1px solid #979797;
+      border-radius: 3px;
+    }
+    span {
+      color: #979797;
+      display: inline-block;
+      margin-top: 14px;
+      font-family: sans-serif, "PingFangSC-Regular";
+    }
+  }
+  ul li:hover {
+    border-radius: 3px;
+    border: 1px solid #04B7A1;
+  }
+}

@@ -1,0 +1,34 @@
+<div class="rong-whiteboard">
+  <div v-if="hasDisplayAuth" class="rong-display-box">
+    <component v-if="display.type == DisplayType.WHITEBOARD" is="whiteboard" :display="display"></component>
+    <component v-else is="rtc-user" :user="getUserById(display.userId)" :isBanZoom="true" :isShowScreenShare="display.type == DisplayType.SCREEN">
+    </component>
+  </div>
+  <div v-else class="rong-display-null" :class="{ 'rong-display-null-opt': hasOptPermission }">
+    <span v-if="hasOptPermission">当前无共享内容, 您可以新建共享内容</span>
+    <span v-else>当前无共享内容, 请耐心等待</span>
+  </div>
+
+  <ul class="rong-display-opt" :class="{ 'rong-display-disable': !isResourceEnable }">
+    <li class="rong-display-share">
+      <div class="rong-display-icon-box" @click="isShowResourceList = !isShowResourceList">
+        <i></i>
+      </div>
+      <span>资源库</span>
+    </li>
+    <li class="rong-display-screenshare" v-if="isChrome" :disabled='isScreenShareDisplaying'>
+      <div class="rong-display-icon-box" @click="displayScreenShare"><i></i></div>
+      <span>屏幕共享</span>
+    </li>
+    <li class="rong-display-wb">
+      <div class="rong-display-icon-box" @click="createWhiteboard"><i></i></div>
+      <span>新建白板</span>
+    </li>
+  </ul>
+
+  <div v-show="isShowResourceList" class="rong-recent-share-box">
+    <component is="resourceList" :whiteboardList="whiteboardList" :assistant="assistant" :teacher="teacher" :displayRecent="displayRecent"></component>
+    <i class="rong-recent-share-mark"></i>
+  </div>
+
+</div>

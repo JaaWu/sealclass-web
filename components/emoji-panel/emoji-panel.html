@@ -1,0 +1,4 @@
+<div class="rong-class-emoji-panel">
+  <span class="rong-class-emoji-content" v-for="item in emojiList" :title="item.symbol" v-html="getNodeHtml(item.node)"
+    @click="setEmoji(item.emoji, $event)"></span>
+</div>

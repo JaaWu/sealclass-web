@@ -1,0 +1,1218 @@
+@import './setting.scss';
+
+$classBackColor: rgb(234, 239, 247);
+$membersWidth: 360px;
+$teacherBoxHeight: 270px;
+$studentBoxHeight: 90px;
+$studentBoxWidth: 120px;
+$studentMaxHeight: 179px;
+$dialogDefaultLeft: calc((100% - 300px) / 2);
+$greenBtnBack: linear-gradient(to right,rgb(4, 189, 180), rgb(12, 220, 155));
+$greenTextColor: rgb(33, 193, 148);
+$lightBlackTextColor: rgb(96, 96, 96);
+$lightGrayColor: #E2E2E2;
+$messageInputHeight: 83px;
+$classTopHeight: 60px;
+
+/* 超出部分省略 */
+.ellipsis {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+/* 百分百 */
+.fullContent {
+  width: 100%;
+  height: 100%;
+}
+
+/* 11px */
+.transFont11 {
+  font-size: 12px;
+  transform: scale(0.9);
+}
+
+/* 10px */
+.transFont10 {
+  font-size: 12px;
+  transform: scale(0.8);
+}
+
+/* 垂直居中 */
+.transCenterY {
+  top: 50%;
+  transform: translateY(-50%);
+}
+/* 水平居中 */
+.transCenterX {
+  left: 50%;
+  transform: translateX(-50%);
+}
+/* 居中 */
+.transCenter {
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.rong-class-box {
+  @extend .fullContent;
+  position: relative;
+  background-color: $classBackColor;
+  .rong-class-info-box {
+    position: relative;
+    width: 100%;
+    height: $classTopHeight;
+    padding: 0 15px;
+    background-color: white;
+  }
+  .rong-class-content-box {
+    position: absolute;
+    top: $classTopHeight;
+    bottom: 0;
+    width: 100%;
+    .rong-class-whiteboard-box {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: $membersWidth;
+      height:  100%;
+      padding: 10px 18px;
+    }
+    .rong-class-active-box {
+      position: absolute;
+      right: 0;
+      width: $membersWidth;
+      height: 100%;
+      background-color: white;
+      display: -webkit-flex;
+      display: flex;
+      flex-direction: column;
+    }
+    .rong-class-rtc-box {
+      
+    }
+    .rong-class-members-box {
+      position: relative;
+      flex-grow: 1;
+      -webkit-flex-grow: 1;
+    }
+  }
+}
+
+/* 顶部 class 信息栏 */
+.rong-class-info {
+  @extend .fullContent;
+  background-color: white;
+  text-align: center;
+  position: relative;
+  .rong-class-logo {
+    display: inline-block;
+    width: 170px;
+    height: 45px;
+    // background-size: 136px auto;
+    background-image: url(../img/icons.svg);
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+  }
+  .rong-class-id, .rong-class-time {
+    display: inline-block;
+    position: relative;
+    @extend .transCenterY;
+    margin: 0 7px;
+    vertical-align: text-top;
+  }
+  .rong-class-id {
+    font-size: 16px;
+  }
+  .rong-class-time {
+    font-size: 12px;
+    margin-right: 13%;
+  }
+}
+
+.rong-whiteboard {
+  background-color: white;
+  position: relative;
+  @extend .fullContent;
+}
+
+.rong-rtc {
+  width: 100%;
+  .rong-rtc-teacher-box {
+    width: 100%;
+    height: $teacherBoxHeight;
+    background-color: black;
+  }
+  .rong-rtc-student-hd {
+    min-height: 95px;
+    max-height: $studentMaxHeight;
+    overflow-y: auto;
+    position: relative;
+    font-size: 0;
+    .rong-rtc-user-wait {
+      position: absolute;
+      @extend .transCenter;
+      font-size: 14px;
+      color: #9B9B9B;
+    }
+  }
+  .rong-rtc-student-hd::-webkit-scrollbar{
+    width:0;
+  }
+  .rong-rtc-student-box {
+    display: inline-block;
+    width: $studentBoxWidth;
+    height: $studentBoxHeight;
+    background-color: black;
+  }
+  .rong-rtc-teacher-empty {
+    @extend .fullContent;
+    position: relative;
+    background-color: #3D4041;
+    p {
+      text-align: center;
+      @extend .transCenter;
+      position: absolute;
+      color: white;
+      width: 100%;
+      letter-spacing: 1px;
+      font-size: 12px;
+    }
+  }
+}
+
+.rong-class-tab-box {
+  width: 100%;
+  height: 43px;
+  line-height: 43px;
+  display: -webkit-flex;
+  display: flex;
+  border-bottom: 1px solid $lightGrayColor;
+  .rong-class-tab {
+    flex-grow: 1;
+    -webkit-flex-grow: 1;
+    text-align: center;
+    color: $lightBlackTextColor;
+    font-size: 14px;
+    span {
+      display: inline-block;
+      height: 100%;
+      cursor: pointer;
+      padding: 0 13px;
+    }
+  }
+  .rong-class-tab-selected span {
+    color: $greenTextColor;
+    border-bottom: 2px solid $greenTextColor;
+  }
+}
+
+.rong-members-content {
+  position: absolute;
+  top: 43px;
+  bottom: 0;
+  width: 100%;
+}
+
+.rong-chat {
+  @extend .fullContent;
+  position: relative;
+  .rong-msglist-box {
+    position: absolute;
+    width: 100%;
+    top: 0;
+    bottom: $messageInputHeight;
+  }
+  .rong-msginput-box {
+    position: absolute;
+    bottom: 0;
+    height: $messageInputHeight;
+    width: 100%;
+    border-top: 1px solid $lightGrayColor;
+  }
+}
+
+.rong-dialog-degrade {
+  h3 {
+    margin-bottom: 20px;
+  }
+  .rong-confirm-btns {
+    text-align: right;
+    button {
+      padding: 0 9px;
+      height: 27px;
+      border: none;
+      font-size: 12px;
+      border-radius: 5px;
+      margin-left: 3px;
+    }
+    .rong-confirm-ok {
+      background: $greenBtnBack;
+      color: white;
+      border: 1px solid transparent;
+    }
+    .rong-confirm-ok[disabled] {
+      opacity: 0.4;
+    }
+    .rong-confirm-cancel {
+      background-color: rgb(249, 249, 249);
+      border: 1px solid rgb(151, 151, 151);
+    }
+  }
+}
+
+.rong-dialog-notifi-alert {
+  text-align: center;
+  width: 308px;
+  .rong-dialog-notifi-alert-mark {
+    width: 30px;
+    height: 30px;
+    display: inline-block;
+    vertical-align: middle;
+    background-image: url('../img/icons.svg');
+    background-position: 0 -263px;
+    margin-right: 10px;
+  }
+  .rong-dialog-notifi-alert-content {
+    display: inline-block;
+    font-size: 14px;
+    vertical-align: middle;
+    margin: 25px 0;
+  }
+}
+
+.rong-dialog-notifi-toast {
+  text-align: center;
+  width: 308px;
+  top: 116px;
+  padding: 12px;
+  .rong-dialog-notifi-content {
+    display: inline-block;
+    font-size: 14px;
+    vertical-align: middle;
+  }
+}
+
+.rong-rtc-dialog {
+  width: 660px;
+  height: 552px;
+  position: absolute;
+  padding: 0;
+  h4 {
+    width: 100%;
+    height: 52px;
+    line-height: 52px;
+    background-color: #FAFAFA;
+    padding-left: 10px;
+    font-size: 14px;
+  }
+  .rong-rtc-dialog-content {
+    position: absolute;
+    top: 52px;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: white;
+    padding: 10px;
+    video {
+      @extend .fullContent;
+      transform: rotateY(180deg);
+    }
+    .rong-rtc-dialog-content-null {
+      position: relative;
+      @extend .fullContent;
+      span {
+        position: absolute;
+        @extend .transCenter;
+      }
+    }
+  }
+}
+
+.rong-dialog-close {
+  position: absolute;
+  right: 15px;
+  top: 15px;
+  color: black;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.rong-dialog-confirm {
+  width: 300px;
+  .rong-confirm-content {
+    margin: 30px 0;
+    font-size: 14px;
+    text-align: center;
+    padding-right: 40px;
+  }
+}
+
+.rong-dialog-apply {
+  width: 300px;
+  top: 116px;
+  padding: 15px 10px;
+  .rong-apply-box {
+    padding: 5px 0 5px 0;
+    line-height: 1;
+  }
+  .rong-apply-avatar {
+    float: left;
+    width: 32px;
+    height: 32px;
+    background-color: red;
+    margin-right: 10px;
+  }
+  .rong-apply-text {
+    line-height: 21px;
+    font-size: 14px;
+  }
+  .rong-confirm-phone-btns {
+    position: absolute;
+    @extend .transCenterY;
+    right: 0;
+    button {
+      display: inline-block;
+      width: 28px;
+      height: 28px;
+      border: none;
+      border-radius: 50%;
+      background-image: url(../img/icons.svg);
+      vertical-align: middle;
+      margin-right: 10px;
+    }
+    .rong-confirm-accept {
+      background-position: -33px -264px;
+    }
+    .rong-confirm-hungup {
+      background-position: -67px -264px;
+    }
+  }
+}
+
+.rong-dialog-degrade {
+  width: 300px;
+  .rong-degrade {
+    margin: 15px 0;
+  }
+  .rong-degrade-user {
+    display: inline-block;
+    width: 50%;
+    margin: 4px 0;
+    line-height: 1;
+    i {
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      border: 1px solid #B2B2B2;
+      background-color: white;
+      margin-right: 8px;
+      vertical-align: middle;
+    }
+    span {
+      font-size: 12px;
+      color: rgb(88, 88, 88);
+      vertical-align: middle;
+      max-width: 96px;
+      display: inline-block;
+      @extend .ellipsis;
+    }
+    i.rong-degrade-selected {
+      background: $greenBtnBack;
+      background-image: url('../img/icons.svg');
+      border: none;
+      background-position: 0px -373px;
+    }
+  }
+}
+
+.rong-dialog-alert {
+  width: 285px;
+}
+
+.rong-user-avatar {
+  @extend .fullContent;
+  border-radius: 50%;
+  background: $bystanderBack;
+  text-align: center;
+  font-size: 13px;
+  color: white;
+  position: relative;
+  span {
+    position: absolute;
+    @extend .transCenter;
+  }
+}
+.rong-user-avatar-assistant {
+  background: $managerBack;
+}
+
+.rong-user-avatar-student {
+  background: $memberBack;
+}
+
+.rong-user-avatar-manager {
+  background: $managerBack;
+}
+.rong-user-avatar-teacher {
+  background: $teacherBack;
+}
+.rong-user-avatar-member {
+  background: $memberBack;
+}
+
+.rong-online-userlist {
+  overflow-y: auto;
+  @extend .fullContent;
+  .rong-online-box {
+    position: relative;
+    height: 48px;
+    display: flex;
+    display: -webkit-flex;
+    align-items: center;
+    -webkit-align-items: center;
+    padding: 0 10px 0 15px;
+    .rong-rtc-user-opt-box {
+      display: none;
+    }
+  }
+  .rong-online-box:hover {
+    background-color: #F3F3F3;
+    .rong-rtc-user-opt-box {
+      display: inline-block;;
+    }
+  }
+  .rong-online-avator {
+    width: 32px;
+    height: 32px;
+    margin-right: 7px;
+  }
+  .rong-online-user-name {
+    font-size: 14px;
+    margin-right: 3px;
+    max-width: 70px;
+    @extend .ellipsis;
+  }
+  .rong-online-user-role {
+    font-size: 12px;
+    height: 17px;
+    border-radius: 17px;
+    color: white;
+    padding: 10px 6px;
+    line-height: 0px;
+    transform: scale(0.8);
+  }
+  .rong-online-role-manager {
+    background-color: rgb(246, 176, 57);
+  }
+  .rong-online-role-teacher {
+    background-color: rgb(255, 102, 25);
+  }
+  .rong-rtc-user-role {
+    position: relative;
+    top: initial;
+    left: 0;
+  }
+}
+
+.rong-message-input {
+  @extend .fullContent;
+  position: relative;
+  .rong-message-input-panel {
+    width: 100%;
+    height: 30px;
+    line-height: 30px;
+    padding: 0 8px;
+    a {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      background-image: url(../img/icons.svg);
+      background-repeat: no-repeat;
+      margin: 0 3px;
+      position: relative;
+      cursor: pointer;
+      @extend .transCenterY;
+    }
+    a input[type="file"] {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      left: 0;
+      top: 0;
+      opacity: 0;
+    }
+    .rong-message-panel-emoji {
+      background-position: 0 -305px;
+    }
+    .rong-message-panel-image {
+      background-position: -29px -305px;
+    }
+    .rong-message-panel-file {
+      background-position: -58px -305px;
+    }
+  }
+  .rong-message-textarea {
+    position: absolute;
+    top: 30px;
+    bottom: 0;
+    border: none;
+    padding: 0 10px;
+    width: 83%;
+    font-size: 13px;
+    resize: none
+  }
+  .rong-message-text-send {
+    width: 55px;
+    height: 26px;
+    border-radius: 5px;
+    background: linear-gradient(to right, #04bdb4, #0cdc9b);
+    position: absolute;
+    bottom: 10px;
+    right: 5px;
+    border: none;
+    color: white;
+    font-size: 13px;
+  }
+  .rong-message-text-send[disabled] {
+    opacity: 0.5;
+  }
+}
+
+.rong-message-list {
+  @extend .fullContent;
+  position: relative;
+  overflow-y: auto;
+  padding: 5px 0;
+  .rong-message {
+    position: relative;
+    // padding: 0;
+  }
+  .rong-message-list-last-mark {
+    // position: absolute;
+    // bottom: 0;
+  }
+  .rong-message-avatar {
+    float: left;
+    width: 32px;
+    height: 32px;
+    margin: 0 5px;
+  }
+  .rong-message-info {
+    line-height: 1;
+    padding: 8px 30px 8px 42px;
+  }
+  .rong-message-self {
+    text-align: right;
+    .rong-message-avatar {
+      float: right;
+    }
+    .rong-message-info {
+      padding: 8px 42px 8px 30px;
+    }
+  }
+  .rong-message-username {
+    display: inline-block;
+    font-size: 12px;
+    color: rgb(155, 155, 155);
+    margin-bottom: 8px;
+  }
+  .rong-message-text {
+    display: inline-block;
+    padding: 8px;
+    font-size: 12px;
+    // background-color: #EBEFF1;
+    line-height: 18px;
+    text-align: left;
+  }
+}
+.rong-rtc-teacher-box {
+  .rong-rtc-user .rong-rtc-user-name {
+    max-width: 100px;
+  }
+  .rong-rtc-user .rong-rtc-user-avatar {
+    width: 80px;
+    height: 80px;
+    .rong-user-avatar {
+      font-size: 35px;
+    }
+  }
+}
+
+.rong-rtc-user {
+  @extend .fullContent;
+  position: relative;
+  .rong-rtc-user-playing {
+    @extend .fullContent;
+    .rong-rtc-user-closevideo {
+      @extend .fullContent;
+      background-color: #3D4041;
+    }
+    video {
+      transform: rotateY(180deg);
+      @extend .fullContent;
+    }
+  }
+  .rong-rtc-user-box {
+    width: 100%;
+    height: 100%;
+    img {
+      width: 100%;
+      height: 100%;
+    }
+  }
+  .rong-rtc-user-screen {
+    position: absolute;
+    @extend .transCenter;
+    text-align: center;
+    span {
+      font-size: 16px;
+      color: #B2B2B2;
+    }
+  }
+  video.rong-rtc-user-screen-video {
+    transform: rotateY(0);
+  }
+  .rong-rtc-user-screen-self {
+    background-image: url(../img/icons.svg);
+    width: 228px;
+    height: 113px;
+    background-position: -104px -262px;
+    margin-bottom: 10px;
+  }
+  // .rong-rtc-user-network {
+
+  // }
+  .rong-rtc-user-loading {
+    @extend .fullContent;
+    .rong-rtc-loading-box {
+      width: 100%;
+      height: 100%;
+      background-color: #3D4041;
+      opacity: 0.7;
+      position: absolute;
+      z-index: 10;
+      filter: blur(2px);
+    }
+  }
+  .rong-rtc-user-avatar {
+    width: 48px;
+    height: 48px;
+    position: absolute;
+    @extend .transCenter;
+    top: 50%;
+  }
+  .rong-rtc-user-name {
+    position: absolute;
+    left: 6px;
+    bottom: 5px;
+    color: white;
+    font-size: 12px;
+    max-width: 60px;
+    z-index: 11;
+    @extend .ellipsis;
+  }
+  .rong-user-avatar {
+    font-size: 20px;
+  }
+}
+.rong-class-image-message {
+  padding: 4px;
+  img {
+    max-width: 150px;
+    max-height: 300px;
+    min-width: 50px;
+    min-height: 50px;
+  }
+}
+.rong-class-image-message, 
+.rong-class-text-message {
+  display: inline-block;
+}
+
+.rong-message {
+  .rong-class-image-message, 
+  .rong-class-text-message {
+    background-color: #EBEFF1;
+  }
+}
+
+.rong-message-self {
+  .rong-class-image-message,
+  .rong-class-text-message {
+    background-color: #DFFAE7;
+  }
+}
+
+@keyframes loading {
+  0%, 60%, 100% {
+    transform: scale(1)
+  }
+  30% {
+    transform: scale(1.4);
+  }
+}
+
+@-webkit-keyframes loading {
+  0%, 60%, 100% {
+    transform: scale(1)
+  }
+  30% {
+    transform: scale(1.4);
+  }
+}
+
+.rong-rtc-loading {
+  position: absolute;
+  top: 7px;
+  right: 7px;
+  z-index: 11;
+  .rong-rtc-loading-child {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: white;
+    float: left;
+    margin: 0 1.5px;
+    animation: loading linear 1s infinite;
+    -webkit-animation: loading linear 1s infinite;
+  }
+  :nth-child(1) {
+    animation-delay: 0s;
+  }
+  :nth-child(2) {
+    animation-delay: 0.3s;
+  }
+  :nth-child(3) {
+    animation-delay: 0.6s;
+  }
+}
+.rong-user-operate {
+  position: relative;
+  @extend .transCenterY;
+  .rong-user-operate-icon {
+    cursor: pointer;
+    display: inline-block;
+    width: 22px;
+    height: 22px;
+    background-image: url('../img/icons.svg');
+    background-repeat: no-repeat;
+    margin: 0 15px;
+    vertical-align: middle;
+  }
+  .rong-user-operate-icon[disabled] {
+    opacity: 0.3;
+    pointer-events: none;
+  }
+  .rong-user-operate-micro {
+    background-position: 0 -54px;
+  }
+  .rong-user-operate-micro[closed] {
+    background-position: -95px -54px;
+  }
+  .rong-user-operate-camera {
+    background-position: -28px -54px;
+  }
+  .rong-user-operate-camera[closed] {
+    background-position: -127px -54px;
+  }
+  .rong-user-operate-volume {
+    background-position: -62px -54px;
+  }
+  .rong-user-operate-volume[closed] {
+    background-position: -165px -54px;
+  }
+  .rong-user-operate-hungup {
+    width: 37px;
+    height: 37px;
+    background-position: 0 -87px;
+  }
+}
+
+.rong-class-self-operate-box {
+  position: absolute;
+  right: 20px;
+  top: -$classTopHeight;
+  height: $classTopHeight;
+  // height: 100%;
+}
+
+.rong-rtc-user-opt-box {
+  position: absolute;
+  line-height: 1;
+  right: 10px;
+  @extend .transCenterY;
+  button {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    background-image: url(../img/icons.svg);
+    margin: 0 1px;
+    background-color: transparent;
+    border: none;
+    // margin: 7px;
+  }
+  button[disabled] {
+    cursor: default;
+  }
+  button[disabled] {
+    cursor: not-allowed;
+  }
+
+  // 移交助教
+  button.rong-rtc-opt-transfer {
+    background-position: 1px -199px;
+  }
+  button.rong-rtc-opt-transfer[disabled] {
+    background-position: 1px -167px;
+  }
+
+  // 设置讲师
+  button.rong-rtc-opt-set-teacher {
+    background-position: -26px -200px;
+  }
+  button.rong-rtc-opt-set-teacher[disabled] {
+    background-position: -26px -168px;
+  }
+
+  // 设置麦克风
+  button.rong-rtc-opt-mic {
+    background-position: -51px -199px;
+  }
+  button.rong-rtc-opt-mic[disabled] {
+    background-position: -51px -167px;
+  }
+  button.rong-rtc-opt-mic[closed="true"] {
+    background-position: -178px -199px;
+  }
+  button.rong-rtc-opt-mic[closed="true"][disabled] {
+    background-position: -178px -167px;
+  }
+
+  // 设置摄像头
+  button.rong-rtc-opt-camera {
+    background-position: -77px -199px;
+  }
+  button.rong-rtc-opt-camera[disabled] {
+    background-position: -77px -167px;
+  }
+  button.rong-rtc-opt-camera[closed="true"] {
+    background-position: -155px -199px;
+  }
+  button.rong-rtc-opt-camera[closed="true"][disabled] {
+    background-position: -155px -167px;
+  }
+
+  // 降级
+  button.rong-rtc-opt-downgrade {
+    background-position: -103px -199px;
+  }
+  button.rong-rtc-opt-downgrade[disabled] {
+    background-position: -103px -167px;
+  }
+
+  // 升级
+  button.rong-rtc-opt-upgrade {
+    background-position: -205px -199px;
+  }
+  button.rong-rtc-opt-upgrade[disabled] {
+    background-position: -205px -167px;
+  }
+
+  // 移除
+  button.rong-rtc-opt-remove {
+    background-position: -129px -199px;
+  }
+  button.rong-rtc-opt-remove[disabled] {
+    background-position: -129px -167px;
+  }
+}
+
+.rong-rtc-opt-apply {
+  width: 72px;
+  height: 26px;
+  vertical-align: middle;
+  border: 2px solid #21C194;
+  background-color: white;
+  color: #21C194;
+  font-size: 14px;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 30px;
+  border-radius: 5px;
+  font-size: 12px;
+}
+.rong-rtc-opt-apply[disabled] {
+  opacity: 0.4;
+}
+
+.rong-message-panel-box {
+  position: absolute;
+  padding: 14px 150px;
+  bottom: 2px;
+}
+.rong-class-emoji-panel {
+  position: absolute;
+  overflow: scroll;
+  bottom: 23px;
+  left: -5px;
+  width: 300px;
+  height: 120px;
+  background-color: white;
+  box-shadow: 0 0 8px rgba(151, 151, 151, 0.2);
+  border-radius: 5px;
+  padding: 8px 8px;
+  font-size: 18px;
+  overflow-x: hidden;
+  .rong-class-emoji-content {
+    display: inline-block;
+    padding: 3px;
+    cursor: pointer;
+  }
+}
+
+.rong-display-null {
+  background-image: url('../img/display-null.png');
+  position: absolute;
+  width: 228px;
+  height: 188px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  span {
+    position: absolute;
+    bottom: 43px;
+    font-size: 12px;
+    color: rgb(215, 215, 215);
+    width: 100%;
+    text-align: center;
+  }
+}
+.rong-display-null-opt {
+  background-image: url('../img/display-null-assistant.png');
+  span {
+    bottom: 20px;
+  }
+}
+
+.rong-display-opt {
+  position: absolute;
+  bottom: 50px;
+  left: 15px;
+  z-index: 20;
+  li {
+    position: relative;
+    display: inline-block;
+    padding: 0 16px;
+    margin: 0 8px;
+    .rong-display-icon-box {
+      cursor: pointer;
+      display: inline-block;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      position: relative;
+      box-shadow: #369688 0px 0px 22px -6px;
+      background-color: white;
+    }
+    i {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background-image: url(../img/icons.svg);
+      @extend .transCenter;
+    }
+    span {
+      position: absolute;
+      width: 100%;
+      left: 0;
+      bottom: -21px;
+      font-size: 13px;
+      text-align: center;
+      color: #3D4041;
+      background-color: rgba(255, 255, 255, 0.45);
+      border-radius: 10px;
+      color: black;
+      // text-shadow: 2px 2px 3px white;
+    }
+  }
+  .rong-display-screenshare i {
+    background-position: -26px -232px;
+  }
+  .rong-display-wb i {
+    background-position: -54px -232px;
+  }
+  .rong-display-share:hover, .rong-display-screenshare:hover, .rong-display-wb:hover {
+    span {
+      color: #21C194;
+    }
+  }
+  .rong-display-screenshare:hover {
+    i {
+      background-position: -114px -232px;
+    }
+  }
+  .rong-display-wb:hover {
+    i {
+      background-position: -150px -232px;
+    }
+  }
+  .rong-display-share {
+    i {
+      background-position: 1px -232px;
+    }
+    pointer-events: auto;
+  }
+  .rong-display-share:hover {
+    i {
+      background-position: -82px -232px;
+    }
+    pointer-events: auto;
+  }
+  // .rong-display-share-enable {
+  //   i {
+  //     background-position: 1px -232px;
+  //   }
+  //   pointer-events: auto;
+  // }
+  // .rong-display-share-enable:hover {
+  //   i {
+  //     background-position: -82px -232px;
+  //   }
+  //   pointer-events: auto;
+  // }
+
+  .rong-display-screenshare[disabled] {
+    opacity: 0.4;
+    pointer-events: none;
+  }
+}
+
+.rong-display-disable {
+  li.rong-display-share {
+    opacity: 0.4;
+    pointer-events: none;
+  }
+  li, li:hover {
+    opacity: 0.4;
+    pointer-events: none;
+  }
+}
+
+.rong-recent-share-list {
+  position: absolute;
+  display: inline-block;
+  background-color: #f4f5f8;
+  // padding-top: 12px;
+  border: 8px solid #f4f5f8;
+  bottom: 109px;
+  left: 20px;
+  max-height: 80%;
+  overflow-y: auto;
+  z-index: 11;
+  ul li {
+    width: 160px;
+    height: 120px;
+    background-color: white;
+  }
+  ul li + li {
+    margin-top: 8px;
+  }
+  .rong-resource-list-whiteboard {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    cursor: pointer;
+    span {
+      position: absolute;
+      @extend .transCenter;
+    }
+  }
+}
+.rong-display-box {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  iframe, video {
+    width: 100%;
+    height: 100%;
+  }
+  .rong-rtc-user-avatar {
+    width: 80px;
+    height: 80px;
+    .rong-user-avatar span {
+      font-size: 32px;
+    }
+  }
+}
+.rong-recent-share-mark {
+  content: '';
+  width: 0;
+  height: 0;
+  border-left: 13px solid transparent;
+  border-right: 13px solid transparent;
+  border-top: 15px solid #f4f5f8;
+  position: absolute;
+  left: 41px;
+  bottom: 98px;
+  z-index: 10;
+}
+
+.rong-whiteboard-box {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  iframe {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+  }
+  .rong-whiteboard-zoom-btn {
+    position: absolute;
+    width: 36px;
+    height: 36px;
+    right: 13px;
+    top: 13px;
+    background-image: url(../img/icons.svg);
+    border: none;
+    z-index: 30;
+    background-position: 0 -401px;
+    background-color: transparent;
+  }
+  .rong-whiteboard-zoom-out {
+    background-position: -44px -401px;
+  }
+}
+
+.rong-msg-notify {
+  text-align: center;
+  // height: 23px;
+  // line-height: 23px;
+  span {
+    font-size: 12px;
+    background-color: #F9F9F9;
+    color: #9B9B9B;
+    padding: 5px 14px;
+    border-radius: 2px;
+  }
+}
+
+@media screen and (max-width: 1100px) {
+  .rong-dialog {
+    left: 50%;
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  
+}

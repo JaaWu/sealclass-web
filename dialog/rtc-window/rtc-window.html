@@ -1,0 +1,17 @@
+<div v-if="isShow" class="rong-dialog rong-rtc-dialog">
+  <h4>{{displayUserName}}</h4>
+  <div class="rong-rtc-dialog-content">
+    <video v-show="isVideoOpened && !isAudience" autoplay ref="rtcVideo"></video>
+    <div v-show="!isVideoOpened" class="rong-rtc-dialog-content-null">
+      <span>
+        摄像头已关闭，建议关闭此窗口
+      </span>
+    </div>
+    <div v-show="isAudience" class="rong-rtc-dialog-content-null">
+      <span>
+        成员已被降级为旁听人，不显示视频画面，建议关闭此窗口
+      </span>
+    </div>
+  </div>
+  <a class="rong-dialog-close" @click="cancel">✕</a>
+</div>

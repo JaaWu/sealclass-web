@@ -1,0 +1,47 @@
+<div class="rong-rtc-user" v-if="user">
+
+  <!-- 加载中, 还未收到流 -->
+  <div v-if="user.isLoading" class="rong-rtc-user-loading">
+    <div class="rong-rtc-loading-box">
+      <div class="rong-rtc-user-avatar">
+        <component is="user-avatar" :user="user"></component>
+      </div>
+    </div>
+    <div class="rong-rtc-loading">
+      <div class="rong-rtc-loading-child"></div>
+      <div class="rong-rtc-loading-child"></div>
+      <div class="rong-rtc-loading-child"></div>
+    </div>
+  </div>
+
+  <!-- 播放中 -->
+  <div v-else class="rong-rtc-user-playing">
+    <div v-if="isSelfScreenShare" class="rong-rtc-user-screen">
+      <div class="rong-rtc-user-screen-self"></div>
+      <span>正在分享屏幕</span>
+    </div>
+    <div v-else @click="showRTCWindow" class="rong-rtc-user-box">
+      <img v-show="thumbnail" :src="thumbnail" alt="">
+      <template v-show="!thumbnail">
+        <video class="rong-rtc-user-screen-video" v-show="isShowVideo && isShowScreenShare" ref="userVideoScreen"
+          autoplay></video>
+        <video v-show="isShowVideo && !isShowScreenShare" ref="userVideoRTC" autoplay></video>
+      </template>
+      <div v-show="!isShowVideo" class="rong-rtc-user-closevideo">
+        <div class="rong-rtc-user-avatar">
+          <component is="user-avatar" :user="user"></component>
+        </div>
+      </div>
+    </div>
+
+    <!-- 网络状态 -->
+    <i class="rong-rtc-user-network"></i>
+  </div>
+
+  <!-- 用户信息 -->
+  <div class="rong-rtc-user-name">
+    <span :title="getUserName(user)">{{getUserName(user)}}</span>
+  </div>
+  <!-- 身份 -->
+  <span class="rong-rtc-user-role" :class="'rong-role-oval-' + user.role">{{role}}</span>
+</div>

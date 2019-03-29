@@ -1,0 +1,11 @@
+<div class="rong-online-userlist">
+  <div v-for="user in sortedUserList" class="rong-online-box">
+    <div class="rong-online-avator">
+      <component is="user-avatar" :user="user"></component>
+    </div>
+    <span class="rong-online-user-name" :title="getUserName(user)">
+      {{getUserName(user)}}</span>
+    <span v-if="isShowRole(user)" class="rong-rtc-user-role" :class="'rong-role-oval-' + user.role">{{getRoleName(user)}}</span>
+    <component is="user-opt" :user="user" :userList="userList" :loginUser="loginUser"></component>
+  </div>
+</div>

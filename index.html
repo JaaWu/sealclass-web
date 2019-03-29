@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+  <!--#include virtual="attach/favicon.html" -->
+  <!--#include virtual="import-tpl.html" -->
+  <!--#include virtual="attach/head-static.html" -->
+
+  <title>SealClass</title>
+</head>
+<body>
+<div id="sealClass" class="rong-class" @click="fullClick">
+  <router-view></router-view>
+</div>
+
+<script>
+  RongIMLib.RongIMEmoji.init({
+    size: 22,
+    url: './assets/img/emoji-48.png'
+  });
+  RongClass.init({
+    el: '#sealClass'
+  });
+</script>
+
+</body>
+</html>

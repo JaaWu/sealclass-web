@@ -1,0 +1,21 @@
+<div class="rong-rtc">
+  <div class="rong-class-self-operate-box">
+    <component is="self-rtc-operate" :hungup="hungup" :userList="userList" :loginUser="loginUser"></component>
+  </div>
+
+  <div class="rong-rtc-teacher-box">
+    <component v-if="teacher" is="rtc-user" :user="teacher"></component>
+    <div v-else class="rong-rtc-teacher-empty">
+      <p>讲师正在赶来的路上, 请耐心等待</p>
+    </div>
+  </div>
+
+  <div v-if="showUserList.length" class="rong-rtc-student-hd">
+    <div v-for="user in showUserList" class="rong-rtc-student-box">
+      <component is="rtc-user" :user="user"></component>
+    </div>
+  </div>
+  <div v-else class="rong-rtc-student-hd">
+    <span class="rong-rtc-user-wait">等待其他人加入 .....</span>
+  </div>
+</div>

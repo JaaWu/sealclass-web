@@ -1,0 +1,19 @@
+<div class="rong-message-list" @scroll="scrollList">
+
+  <div class="rong-message" v-for="message, index in displayedMessageList" :class="{ 'rong-message-self': isSelfSend(message) }">
+    <template v-if="isShowAvatar(message)">
+      <div class="rong-message-avatar">
+        <component is="user-avatar" :user="getMsgSender(message)"></component>
+      </div>
+      <div class="rong-message-info">
+        <div><span v-if="!isSelfSend(message)" class="rong-message-username">{{ getMsgSenderName(message) }}</span></div>
+        <component :is="message.messageType" :message="message"></component>
+      </div>
+    </template>
+    <div v-else class="rong-msg-notify">
+      <component :is="message.messageType" :message="message"></component>
+    </div>
+  </div>
+  <div ref="msg-lasted" class="rong-message-list-last-mark"></div>
+
+</div>

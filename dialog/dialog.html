@@ -1,0 +1,68 @@
+<div v-if="isShow" :class="{ 'rong-dialog-ontop': isOnTop }">
+
+  <div class="rong-dialog-shadow-layer" v-if="isShowShadowLayer"></div>
+
+  <div class="rong-dialog" :class="'rong-dialog-' + type" :style="dialogStyle">
+
+    <template v-if="type === DialogType.CALL">
+      <div class="rong-dialog-user" v-if="user">
+        <component is="user-avatar" :user="user"></component>
+      </div>
+      <p class="rong-dialog-content" :class="{ 'rong-dialog-user-content': isContentCenter }">{{content}}</p>
+      <div class="rong-dialog-btns rong-dialog-call-btns">
+        <button v-for="opt in buttons" :class="'rong-dialog-btn-' + opt.type" @click="click(opt)">
+          {{opt.name}}
+        </button>
+      </div>
+    </template>
+    
+    <template v-else-if="type === DialogType.APPLY">
+      <div class="rong-dialog-content-box">
+        <div class="rong-dialog-user" v-if="user">
+          <component is="user-avatar" :user="user"></component>
+        </div>
+        <p class="rong-dialog-content" :class="{ 'rong-dialog-user-content': isContentCenter }">{{content}}</p>
+      </div>
+      <div class="rong-dialog-btns rong-dialog-downgrade-btns">
+        <button v-for="opt in buttons" :class="'rong-dialog-btn-' + opt.type" @click="click(opt)">
+          {{opt.name}}
+        </button>
+      </div>
+    </template>
+    
+    <template v-else-if="type === DialogType.ALERT">
+      <div class="rong-dialog-content-box">
+        <div class="rong-dialog-alert-mark"></div>
+        <p class="rong-dialog-content">{{content}}</p>
+      </div>
+    </template>
+    
+    <template v-else-if="type === DialogType.LOADING">
+      <div class="rong-dialog-content-box">
+        <div class="rong-dialog-loading-box"><div></div><div></div><div></div><div></div>
+        </div>
+        <p class="rong-dialog-content">{{content}}</p>
+      </div>
+    </template>
+    
+    <template v-else-if="type === DialogType.TOAST">
+      <span class="rong-dialog-toast-content">{{content}}</span>
+    </template>
+    
+    <template v-else>
+      <h3 v-if="title">{{title}}</h3>
+      <div class="rong-dialog-content-box">
+        <div class="rong-dialog-user" v-if="user">
+          <component is="user-avatar" :user="user"></component>
+        </div>
+        <p class="rong-dialog-content" :class="{ 'rong-dialog-user-content': isContentCenter }">{{content}}</p>
+      </div>
+      <div class="rong-dialog-btns">
+        <button v-for="opt in buttons" :class="'rong-dialog-btn-' + opt.type" 
+          @click="click(opt)">
+          {{opt.name}}
+        </button>
+      </div>
+    </template>
+  </div>
+</div>

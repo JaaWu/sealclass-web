@@ -1,0 +1,13 @@
+<div v-if="isShow">
+  <div class="rong-dialog-shadow-layer"></div>
+  <div class="rong-dialog rong-dialog-create-db">
+    <h3>新建白板</h3>
+    <ul class="rong-dialog-wb-list">
+      <li @click="createBlankWb">
+        <div class="rong-dialog-wb-icon"></div>
+        <span>空白白板</span>
+      </li>
+    </ul>
+    <a class="rong-dialog-close" @click="cancel">✕</a>
+  </div>
+</div>

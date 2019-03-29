@@ -1,0 +1,14 @@
+<div v-if="isShow" class="rong-dialog-box">
+  <div class="rong-dialog rong-dialog-degrade">
+    <h3>降级学员</h3>
+    <div class="rong-degrade">
+      <div v-for="user in userList" class="rong-degrade-user">
+        <i :class="{ 'rong-degrade-selected': !!user.isSelected }" @click="selectUser(user)"></i><span>{{getUserName(user)}}</span>
+      </div>
+    </div>
+    <div class="rong-confirm-btns">
+      <button class="rong-confirm-cancel" @click="cancel">取消</button>
+      <button class="rong-confirm-ok" @click="confirm" :disabled="!hasSelected">降级</button>
+    </div>
+  </div>
+</div>

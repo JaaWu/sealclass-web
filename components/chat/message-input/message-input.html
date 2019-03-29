@@ -1,0 +1,17 @@
+<div class="rong-message-input">
+  <div class="rong-message-input-panel">
+    <a class="rong-message-panel-emoji" @click="controlEmojiPanel" @mouseleave="hideEmojiPanel">
+      <div class="rong-message-panel-box" v-if="isShowEmojiPanel">
+        <component is="emoji-panel" :hide="hideEmojiPanel" :setEmoji="selectEmoji"></component>
+      </div>
+    </a>
+    <!-- <a class="rong-message-panel-image">
+      <input type="file" accept="image/gif,image/jpeg,image/png,image/jpg" @change="uploadImage">
+    </a>
+    <a class="rong-message-panel-file">
+      <input type="file">
+    </a> -->
+  </div>
+  <textarea ref="textarea" v-model="content" @keydown="keydown" class="rong-message-textarea" name="" id="" cols="30" rows="10"></textarea>
+  <button class="rong-message-text-send" :disabled="content === ''" @click="sendTextMsg">发送</button>
+</div>

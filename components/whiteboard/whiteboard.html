@@ -1,0 +1,5 @@
+<div class="rong-whiteboard-box">
+  <button v-if="isZoom" @click="cancelFullScreen" class="rong-whiteboard-zoom-btn rong-whiteboard-zoom-out"></button>
+  <button v-else="isZoom" @click="entryFullScreen" class="rong-whiteboard-zoom-btn"></button>
+  <iframe ref="wbIframe" :src="displayUrl" frameborder="0"></iframe>
+</div>
