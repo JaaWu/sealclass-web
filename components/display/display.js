@@ -113,6 +113,9 @@
       displayScreenShare: function () {
         var context = this,
           loginUserId = server.getLoginUserId();
+        if (context.isScreenShareDisable) {
+          return;
+        }
         var display = {
           type: DisplayType.SCREEN,
           userId: loginUserId
@@ -185,6 +188,9 @@
         isChrome: function () {
           var browserName = utils.getBrowser().type;
           return browserName === 'Chrome';
+        },
+        isScreenShareDisable: function () {
+          return this.isScreenShareDisplaying || !this.isChrome;
         }
       },
       components: {

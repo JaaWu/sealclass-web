@@ -864,7 +864,6 @@
 
 .rong-user-operate .rong-user-operate-icon[disabled] {
   opacity: 0.3;
-  pointer-events: none;
 }
 
 .rong-user-operate .rong-user-operate-micro {
@@ -1158,7 +1157,15 @@
 
 .rong-display-opt .rong-display-screenshare[disabled] {
   opacity: 0.4;
-  pointer-events: none;
+  cursor: none;
+}
+
+.rong-display-opt .rong-display-screenshare[disabled] i {
+  background-position: -26px -232px;
+}
+
+.rong-display-opt .rong-display-screenshare[disabled] span {
+  color: #3D4041;
 }
 
 .rong-display-disable li.rong-display-share {

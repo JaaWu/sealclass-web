@@ -377,8 +377,15 @@
    * @param {object} callbacks 回调函数对象
    */
   function sendTextMessage(content, callbacks) {
+    var instance = RongClass.instance || {},
+      auth = instance.auth || {},
+      loginUser = auth.loginUser || {};
     var msg = new RongIMLib.TextMessage({
-      content: content
+      content: content,
+      user: {
+        id: loginUser.userId,
+        name: loginUser.userName
+      }
     });
     sendClassMessage(msg, callbacks);
   }

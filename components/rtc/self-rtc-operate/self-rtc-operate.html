@@ -1,6 +1,6 @@
 <div class="rong-user-operate" v-if="loginUser">
-  <i class="rong-user-operate-icon rong-user-operate-micro" :disabled="isDisabled" :closed="!isAudioOpened" @click="switchAudio"></i>
-  <i class="rong-user-operate-icon rong-user-operate-camera" :disabled="isDisabled" :closed="!isVideoOpened" @click="switchVideo"></i>
-  <i class="rong-user-operate-icon rong-user-operate-volume" :closed="isMuted" @click="switchVolume"></i>
-  <i class="rong-user-operate-icon rong-user-operate-hungup" @click="confirmHungup(true)"></i>
+  <i class="rong-user-operate-icon rong-user-operate-micro" :title="locale.class.setMic" :disabled="isDisabled" :closed="!isAudioOpened" @click="switchAudio"></i>
+  <i class="rong-user-operate-icon rong-user-operate-camera" :title="locale.class.setCamra" :disabled="isDisabled" :closed="!isVideoOpened" @click="switchVideo"></i>
+  <i class="rong-user-operate-icon rong-user-operate-volume" :title="locale.class.setVoice" :closed="isMuted" @click="switchVolume"></i>
+  <i class="rong-user-operate-icon rong-user-operate-hungup" :title="locale.class.quit" @click="confirmHungup(true)"></i>
 </div>

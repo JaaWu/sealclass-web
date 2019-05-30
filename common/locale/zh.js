@@ -17,8 +17,21 @@
     class: {
       assistant: '助教',
       teacher: '讲师',
-      student: '学生',
-      audience: '旁听者'
+      student: '学员',
+      audience: '旁听者',
+      share: '邀请加入会议',
+      setMic: '设置本地麦克风',
+      setCamra: '设置本地摄像头',
+      setVoice: '设置本地扬声器',
+      quit: '退出会议',
+      setAssistant: '转让助教',
+      setTeacher: '设置讲师',
+      setMemberMic: '设置成员麦克风',
+      setMemberCamera: '设置成员摄像头',
+      upgrade: '升级成员为学员',
+      downgrade: '降级成员为旁听者',
+      kick: '将成员移出会议',
+      openWithOtherBrowser: '请在 Chrome 中使用屏幕共享功能'
     },
     errorCode: {
       '-10000': '网络不可用',

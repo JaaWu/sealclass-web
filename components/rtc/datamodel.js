@@ -19,6 +19,13 @@
 
   var loginUserId /* loginUserScreenShare */;
 
+  function resizeStream(user, isMax) {
+    var StreamType = rongRTC.StreamSize;
+    user.stream.tag = user.stream.tag || RTCTag.RTC;
+    user.stream.size = isMax ? StreamType.MAX : StreamType.MIN;
+    return rongRTCStream.resize(user);
+  }
+
   function clearScreenShareChooseBox() {
     RongScreenShare.clearChooseBox();
   }
@@ -274,6 +281,8 @@
     leave: leave,
     publishSelf: publishSelf,
     unPublishSelf: unPublishSelf,
+
+    resizeStream: resizeStream,
 
     openAudio: openAudio,
     closeAudio: closeAudio,

@@ -1,14 +1,14 @@
 <div>
   <div v-if="!isLoginUser" class="rong-rtc-user-opt-box">
-    <button class="rong-rtc-opt-transfer" @click="setAssistant" :disabled="!isCanSetAssistant"></button>
-    <button class="rong-rtc-opt-set-teacher" @click="setTeacher" :disabled="!isCanSetTeacher"></button>
-    <button class="rong-rtc-opt-mic" @click="setMicro" :disabled="!isCanSetVideoAudio"
+    <button class="rong-rtc-opt-transfer" @click="setAssistant" :disabled="!isCanSetAssistant" :title="locale.class.setAssistant"></button>
+    <button class="rong-rtc-opt-set-teacher" @click="setTeacher" :disabled="!isCanSetTeacher" :title="locale.class.setTeacher"></button>
+    <button class="rong-rtc-opt-mic" @click="setMicro" :disabled="!isCanSetVideoAudio" :title="locale.class.setMemberMic"
       :closed="isAudioClosed"></button>
-    <button class="rong-rtc-opt-camera" @click="setCamera" :disabled="!isCanSetVideoAudio"
+    <button class="rong-rtc-opt-camera" @click="setCamera" :disabled="!isCanSetVideoAudio" :title="locale.class.setMemberCamera"
       :closed="isVideoClosed"></button>
-    <button v-if="isShowUpgrade" class="rong-rtc-opt-upgrade" @click="inviteUpgrade" :disabled="!isCanUpgrade"></button>
-    <button v-else class="rong-rtc-opt-downgrade" @click="downgrade" :disabled="!isCanDowngrade"></button>
-    <button class="rong-rtc-opt-remove" @click="kick" :disabled="!isCanKick"></button>
+    <button v-if="isShowUpgrade" class="rong-rtc-opt-upgrade" @click="inviteUpgrade" :disabled="!isCanUpgrade" :title="locale.class.upgrade"></button>
+    <button v-else class="rong-rtc-opt-downgrade" @click="downgrade" :disabled="!isCanDowngrade" :title="locale.class.downgrade"></button>
+    <button class="rong-rtc-opt-remove" @click="kick" :disabled="!isCanKick" :title="locale.class.kick"></button>
   </div>
   <div v-if="loginUser.role === RoleENUM.AUDIENCE && isLoginUser">
     <button v-if="isSpeechApplying" class="rong-rtc-opt-apply" disabled>申请中...</button>

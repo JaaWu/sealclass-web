@@ -3,7 +3,8 @@
 
   var common = RongClass.common,
     utils = RongClass.utils,
-    server = RongClass.dataModel.server;
+    server = RongClass.dataModel.server,
+    rtcServer = RongClass.dataModel.rtc;
   
   var RTCTag = RongClass.ENUM.RTCTag,
     RoleEnum = RongClass.ENUM.Role,
@@ -43,6 +44,17 @@
         return;
       }
       var mediaStream = context.user[tag].mediaStream;
+      if (context.isShowBigStream) {
+        rtcServer.resizeStream({
+          id: context.user.userId,
+          stream: context.user[tag]
+        }, true).then(function () {
+          common.console.warn(context.user.userId + '切换大流成功');
+        }).catch(function (error) {
+          common.console.warn(context.user.userId + '切换大流失败');
+          common.console.error(error);
+        });
+      }
       if (videoEl && mediaStream.id) {
         context.isShowThumbnail && videoEl.addEventListener('play', function () {
           // context.thumbnail = utils.getThumbnailByVideo(videoEl);
@@ -88,7 +100,7 @@
     var options = {
       name: 'rtc-user',
       template: '#rong-template-rtc-user',
-      props: ['user', 'isBanZoom', 'isShowScreenShare', 'isShowThumbnail'],
+      props: ['user', 'isBanZoom', 'isShowScreenShare', 'isShowThumbnail', 'isShowBigStream'],
       data: function () {
         return {
           isShowBig: false,
@@ -96,12 +108,17 @@
         };
       },
       computed: {
+        isSelf: function () {
+          var loginUserId = server.getLoginUserId(),
+            user = this.user;
+          return loginUserId === user.id;
+        },
         isShowVideo: function () {
           var isShow = true;
           if (!this.isShowScreenShare) {
             isShow = this.isVideoOpened;
           }
-          return isShow && !this.isShowBig;
+          return isShow
         },
         isVideoOpened: function () {
           var user = this.user || {};
@@ -128,8 +145,26 @@
           if (isShow && !this.isSelfScreenShare) {
             showStream(this, ScreenShareKey);
           }
+          // 组件未销毁, 且不再展示屏幕共享时, 展示视频流
+          if (!isShow) {
+            showStream(this, RTCKey);
+          }
         }
       }, getWatch()),
+      destroyed: function () {
+        var context = this;
+        if (context.isShowBigStream) {
+          rtcServer.resizeStream({
+            id: context.user.userId,
+            stream: context.user[RTCTag.RTC]
+          }, false).then(function () {
+            common.console.warn(context.user.userId + '切换小流成功');
+          }).catch(function (error) {
+            common.console.warn(context.user.userId + '切换小流失败');
+            common.console.error(error);
+          });
+        }
+      },
       mounted: function () {
         var context = this,
           screenUser = context.user[ScreenShareKey];

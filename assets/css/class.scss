@@ -806,7 +806,7 @@ $classTopHeight: 60px;
   }
   .rong-user-operate-icon[disabled] {
     opacity: 0.3;
-    pointer-events: none;
+    // pointer-events: none;
   }
   .rong-user-operate-micro {
     background-position: 0 -54px;
@@ -1090,7 +1090,14 @@ $classTopHeight: 60px;
 
   .rong-display-screenshare[disabled] {
     opacity: 0.4;
-    pointer-events: none;
+    cursor: none;
+    i {
+      background-position: -26px -232px;
+    }
+    span {
+      color: #3D4041;
+    }
+    // pointer-events: none;
   }
 }
 

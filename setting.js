@@ -29,7 +29,8 @@
     },
     class: {
       appleySpeechWaitTime: 30000,  // 请求框展示时间
-      toastTime: 30000  // 提示框展示时间
+      toastTime: 30000,  // 提示框展示时间
+      maxPersonCount: 16 // 最大人数
     },
     isDebug: true
   };

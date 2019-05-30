@@ -20,6 +20,9 @@
         instance.setMute(isMuted);
       },
       switchAudio: function () {
+        if (this.isDisabled) {
+          return;
+        }
         var isAudioOpenedNow = this.isAudioOpened;
         var audioEnable = !isAudioOpenedNow;
         var switchEvent = audioEnable ? rtcServer.openAudio : rtcServer.closeAudio;
@@ -28,6 +31,9 @@
         // server.syncMicroStatus(audioEnable);
       },
       switchVideo: function () {
+        if (this.isDisabled) {
+          return;
+        }
         var isVideoOpenedNow = this.isVideoOpened;
         var videoEnable = !isVideoOpenedNow;
         var switchEvent = videoEnable ? rtcServer.openVideo : rtcServer.closeVideo;
