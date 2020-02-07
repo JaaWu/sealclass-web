@@ -1,10 +1,11 @@
 (function (win) {
   var setting = {
+    version: '1.0.2',
     lang: 'zh',
-    server: 'https://server/api', // SealClass Server 地址
+    server: 'https://api-sealclass.rongcloud.cn/api/v1', // SealClass Server 地址
     im: {
-      appKey: '9juuh2oijnn',
-      // navi: 'https://nav.cn.ronghub.com', // navi 地址, 公有云可不填
+      appKey: 'uwd1c0sxuqp91',
+      // navi: 'https://navqa.cn.ronghub.com', // navi 地址, 私有云可不填
       // api: '',
       // protobuf: '',
       reconnectUrl: 'cdn.ronghub.com/RongIMLib-2.2.6.min.js' // 重连地址
@@ -14,7 +15,7 @@
       // url: ''
     },
     upload: {
-      url: 'https://upload.qiniu.com' // 上传文件地址, 默认七牛
+      url: 'https://upload.qiniu.com' // 上传文件地址
     },
     rtc: {
       resolution: { // 分辨率选项
@@ -28,9 +29,9 @@
       screenPluginPath: 'assets/plugin/screenshare-addon.zip' // 屏幕共享插件地址
     },
     class: {
-      appleySpeechWaitTime: 30000,  // 请求框展示时间
-      toastTime: 30000,  // 提示框展示时间
-      maxPersonCount: 16 // 最大人数
+      appleySpeechWaitTime: 30000,
+      toastTime: 30000,
+      maxPersonCount: 16
     },
     isDebug: true
   };

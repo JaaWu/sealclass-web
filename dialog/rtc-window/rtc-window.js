@@ -3,6 +3,7 @@
 
   var RTCTag = RongClass.ENUM.RTCTag;
   var common = RongClass.common,
+    server = RongClass.dataModel.server,
     RoleENUM = RongClass.ENUM.Role;
 
   var DialogHandle = {
@@ -51,6 +52,14 @@
         };
       },
       computed: {
+        isSelf: function () {
+          var loginUserId = server.getLoginUserId(),
+            user = this.user;
+          return loginUserId === user.id;
+        },
+        selfVideoClassName: function () {
+          return RongClass.instance.selfVideoClassName;
+        },
         displayUserName: function () {
           var user = this.user;
           return common.getUserName(user);

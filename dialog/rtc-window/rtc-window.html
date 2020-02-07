@@ -1,7 +1,8 @@
 <div v-if="isShow" class="rong-dialog rong-rtc-dialog">
   <h4>{{displayUserName}}</h4>
   <div class="rong-rtc-dialog-content">
-    <video v-show="isVideoOpened && !isAudience" autoplay ref="rtcVideo"></video>
+    <video :class="isSelf ? selfVideoClassName : ''" v-show="isVideoOpened && !isAudience" autoplay ref="rtcVideo"
+          :muted="isSelf"></video>
     <div v-show="!isVideoOpened" class="rong-rtc-dialog-content-null">
       <span>
         摄像头已关闭，建议关闭此窗口

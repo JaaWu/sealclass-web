@@ -328,7 +328,7 @@
 
   function reconnect(callbacks) {
     callbacks = callbacks || utils.noop;
-    var rates = [], reconnectTime = 1500, reconnectCount = 15;
+    var rates = [], reconnectTime = 1000, reconnectCount = 15;
     for (var i = 0; i < reconnectCount; i++) {
       rates.push(reconnectTime);
     }

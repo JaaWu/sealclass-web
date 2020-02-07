@@ -382,7 +382,10 @@
       // elem.pause();
     };
     var unMuteMe = function (elem) {
-      elem.muted = false;
+      var selfVideoClassName = RongClass.instance.selfVideoClassName;
+      if (elem.className.indexOf(selfVideoClassName) === -1) {
+        elem.muted = false;
+      }
       // elem.play();
     };
     var videos = document.querySelectorAll('video');

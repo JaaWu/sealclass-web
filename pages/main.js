@@ -35,6 +35,9 @@
         RongClass.mixins.locale
       ],
       computed: {
+        selfVideoClassName: function () {
+          return 'rong-video-self';
+        }
       },
       methods: {
         setMute: function (isMute) {

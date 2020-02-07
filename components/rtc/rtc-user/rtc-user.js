@@ -135,6 +135,9 @@
             user = this.user,
             isShowScreenShare = this.isShowScreenShare;
           return loginUserId === user.id && isShowScreenShare;
+        },
+        selfVideoClassName: function () {
+          return RongClass.instance.selfVideoClassName;
         }
       },
       watch: utils.extend({

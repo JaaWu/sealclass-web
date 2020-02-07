@@ -79,22 +79,26 @@
     });
   }
 
+  function reconnect() {
+    var chatServer = RongClass.dataModel.chat;
+    var onError = function (error) {
+      reconnect();
+      common.console.error({ '重连失败': error });
+    };
+    chatServer.reconnect({
+      onSuccess: function () {
+        destoryLoading();
+      },
+      onTokenIncorrect: onError,
+      onError: onError
+    });
+  }
+
   function reconnectWhenNetworkUnavailable() {
     var chatServer = RongClass.dataModel.chat;
     emitter.on(Event.NETWORK_UNAVAILABLE, function () {
       createLoading('网络已断开, 正在重连 ...');
-      var onError = function (error) {
-        destoryLoading();
-        // confirmHungup('网络已断开, 请重新进入房间');
-        common.console.error({ '重连失败': error });
-      };
-      chatServer.reconnect({
-        onSuccess: function () {
-          destoryLoading();
-        },
-        onTokenIncorrect: onError,
-        onError: onError
-      });
+      reconnect();
     });
   }
 

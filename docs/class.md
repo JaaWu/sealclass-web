@@ -1,6 +1,6 @@
 ## 课堂页面
 
-![image](image/class.png)
+![image](image/login.png)
 
 ### 文件位置
 

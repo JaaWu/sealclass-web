@@ -25,7 +25,7 @@
       <template v-show="!thumbnail">
         <video class="rong-rtc-user-screen-video" v-show="isShowVideo && isShowScreenShare" ref="userVideoScreen"
           autoplay></video>
-        <video v-show="isShowVideo && !isShowScreenShare" ref="userVideoRTC" autoplay :muted="isSelf"></video>
+        <video :class="isSelf ? selfVideoClassName : ''" v-show="isShowVideo && !isShowScreenShare" ref="userVideoRTC" autoplay :muted="isSelf"></video>
       </template>
       <div v-show="!isShowVideo" class="rong-rtc-user-closevideo">
         <div class="rong-rtc-user-avatar">
