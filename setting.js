@@ -1,10 +1,10 @@
 (function (win) {
   var setting = {
-    version: '1.0.2',
+    version: '2.0.0',
     lang: 'zh',
-    server: 'https://api-sealclass.rongcloud.cn/api/v1', // SealClass Server 地址
+    server: 'https://ke.rongcloud.cn/api/v2', // SealClass Server 地址
     im: {
-      appKey: 'uwd1c0sxuqp91',
+      appKey: 'pkfcgjstp8888',
       // navi: 'https://navqa.cn.ronghub.com', // navi 地址, 私有云可不填
       // api: '',
       // protobuf: '',

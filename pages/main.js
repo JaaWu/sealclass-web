@@ -4,6 +4,9 @@
   var Vue = dependencies.Vue;
   var VueRouter = dependencies.VueRouter;
   var routes = RongClass.routes;
+  var common = RongClass.common;
+  var ENUM = RongClass.ENUM;
+  var utils = RongClass.utils;
 
   function getRouter() {
     var ignoreAuthRoutes = ['login'];
@@ -34,11 +37,11 @@
       mixins: [
         RongClass.mixins.locale
       ],
-      computed: {
+      computed: utils.extend(common.getVueComputed(), {
         selfVideoClassName: function () {
           return 'rong-video-self';
         }
-      },
+      }),
       methods: {
         setMute: function (isMute) {
           this.isMuted = isMute;

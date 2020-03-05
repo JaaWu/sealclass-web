@@ -16,17 +16,17 @@
     var options = {
       name: 'rong-rtc',
       template: '#rong-template-rtc',
-      props: ['userList', 'loginUser', 'hungup'],
+      props: ['userList', 'loginUser', 'hungup', 'closeClass'],
       data: function () {
         return {
         };
       },
       computed: {
-        // student or assistant
+        // student or assistant or teacher
         showUserList: function () {
           var userList = this.userList.filter(function (user) {
-            return user.role === Role.STUDENT ||
-              user.role === Role.ASSISTANT;
+            var role = user.role;
+            return role === Role.STUDENT || role === Role.ASSISTANT || role === Role.TEACHER;
           });
           return common.sortByRole(userList);
         },
@@ -59,15 +59,22 @@
           isAudience = routerData.isAudience,
           resolution = routerData.resolution,
           videoEnable = routerData.videoEnable,
+          device = routerData.videoInput,
           audioEnable = true;
 
-        !isAudience && rtcServer.publishSelf(resolution, videoEnable, audioEnable)
-          .catch(function (error) {
-            dialog.confirm({
-              content: error
-            });
-            common.console.error(error);
+        // if (!this.isTeacher) {
+        //   videoEnable = false;
+        // }
+        !isAudience && rtcServer.publishSelf(resolution, videoEnable, audioEnable, {
+          device: device
+        }).catch(function (error) {
+          error = error || {};
+          var errorMsg = RongClass.instance.locale.errorCode[error.code] || error;
+          dialog.confirm({
+            content: errorMsg
           });
+          common.console.error(error);
+        });
       },
       methods: getMethods()
     };

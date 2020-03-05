@@ -14,6 +14,11 @@
   
   var rtcBigDialog;
 
+  function isAudioOpened() {
+    var rtcStream = this.user[RTCTag.RTC] || {};
+    return rtcStream.audio;
+  }
+
   function closeRTCWindow() {
     rtcBigDialog && rtcBigDialog.destroy();
   }
@@ -44,7 +49,7 @@
         return;
       }
       var mediaStream = context.user[tag].mediaStream;
-      if (context.isShowBigStream) {
+      if (context.isShowBigStream && !context.isSelf) {
         rtcServer.resizeStream({
           id: context.user.userId,
           stream: context.user[tag]
@@ -74,6 +79,21 @@
     return {
       showRTCWindow: function () {
         showRTCWindow(!this.isShowBig, this);
+      },
+      setMicro: function () {
+        RongClass.operate.setMicro({
+          enable: !this.isAudioOpened,
+          userId: this.user.id
+        });
+      },
+      setCamera: function () {
+        RongClass.operate.setCamera({
+          enable: !this.isVideoOpened,
+          userId: this.user.id
+        });
+      },
+      kick: function () {
+        RongClass.operate.kick(this.user);
       }
     };
   }
@@ -100,7 +120,7 @@
     var options = {
       name: 'rtc-user',
       template: '#rong-template-rtc-user',
-      props: ['user', 'isBanZoom', 'isShowScreenShare', 'isShowThumbnail', 'isShowBigStream'],
+      props: ['user', 'isBanZoom', 'isShowScreenShare', 'isShowThumbnail', 'isShowBigStream', 'isShowOptBtn'],
       data: function () {
         return {
           isShowBig: false,
@@ -125,6 +145,7 @@
           var rtcStream = user[RTCKey] || {};
           return rtcStream.video;
         },
+        isAudioOpened: isAudioOpened,
         role: function () {
           var role = this.user.role;
           var roleName = RoleEnum[role];
@@ -156,7 +177,8 @@
       }, getWatch()),
       destroyed: function () {
         var context = this;
-        if (context.isShowBigStream) {
+        var user = context.user;
+        if (context.isShowBigStream && user && !context.isSelf) {
           rtcServer.resizeStream({
             id: context.user.userId,
             stream: context.user[RTCTag.RTC]
@@ -170,6 +192,7 @@
       },
       mounted: function () {
         var context = this,
+          user = context.user,
           screenUser = context.user[ScreenShareKey];
         if (!context.user.isLoading) {
           showStream(context);

@@ -24,6 +24,9 @@
           if (action === RoomAction.KICK || action === RoomAction.LEAVE) {
             content = this.userName + ' 离开房间';
           }
+          if (action === RoomAction.JOIN) {
+            content = this.userName + ' 加入房间';
+          }
           return content;
         }
       },

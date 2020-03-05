@@ -3395,6 +3395,7 @@
           });
         }
       });
+      // window.on
       var users = room.users;
 
       var usersHandler = function usersHandler() {

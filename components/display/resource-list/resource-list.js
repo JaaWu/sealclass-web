@@ -10,7 +10,7 @@
     var options = {
       name: 'recentShare',
       template: '#rong-template-resource-list',
-      props: ['whiteboardList', 'assistant', 'teacher', 'displayRecent'],
+      props: ['whiteboardList', 'assistant', 'teacher', 'displayRecent', 'createWhiteboard'],
       data: function () {
         return {
         };

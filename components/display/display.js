@@ -31,6 +31,12 @@
     }
   }
 
+  function showScreenErrorDialog() {
+    dialog.confirm({
+      content: '加载屏幕共享失败'
+    });
+  }
+
   function showScreenPluginInstallDiloag() {
     var path = RongClass.setting.rtc.screenPluginPath;
     dialog.confirm({
@@ -91,6 +97,15 @@
 
   function getMethods() {
     return {
+      displaySelf: function () {
+        var user = this.loginUser,
+          role = user.role;
+        var displayType = role === RoleENUM.TEACHER ? DisplayType.TEACHER : DisplayType.ASSISTANT;
+        this.displayRecent({
+          type: displayType,
+          userId: common.getUserId(user)
+        });
+      },
       displayRecent: function (displayParams) {
         if (this.isResourceEnable) {
           displayRecent(this, displayParams);
@@ -131,7 +146,8 @@
           };
           displayRecent(context, display);
         }).catch(function (error) {
-          !error.message && showScreenPluginInstallDiloag();
+          console.error(error);
+          // showScreenErrorDialog(); 屏幕共享取消选择后也会走这里
         });
       },
       getUserById: function (id) {
@@ -166,6 +182,7 @@
             displayId = this.display.userId;
           var hasDisplayAuth = true;
           var isWb = displayType == DisplayType.WHITEBOARD;
+          console.log('user', JSON.stringify(this.getUserById(displayId))); // 暂时如此兼容 vue 底层
           if (!utils.isNull(displayId) && !isWb) { // 兼容角色变换但 server 未发送更换 display 消息, 不展示学生、旁观者的用户视频
             var user = server.getUserById(displayId);
             hasDisplayAuth = [RoleENUM.ASSISTANT, RoleENUM.TEACHER].indexOf(user.role) !== -1;
@@ -202,6 +219,9 @@
       watch: {
         'display.type': function () {
           closeScreenShare(this);
+        },
+        userList: function (newUser, oldUser) {
+          console.log('userList changed', JSON.parse(JSON.stringify(newUser)));
         }
       },
       mounted: function () {

@@ -4,6 +4,7 @@
   var RTCTag = RongClass.ENUM.RTCTag;
   var common = RongClass.common,
     server = RongClass.dataModel.server,
+    rtcServer = RongClass.dataModel.rtc,
     RoleENUM = RongClass.ENUM.Role;
 
   var DialogHandle = {
@@ -31,11 +32,30 @@
     }
   };
 
+  function resizeStream(context, options) {
+    options = options || {};
+    var isMax = options.isMax;
+    var user = context.user;
+    var rtcStream = user[RTCTag.RTC];
+    user && !context.isSelf && rtcServer.resizeStream({
+      id: user.userId,
+      stream: rtcStream
+    }, isMax).then(function () {
+      common.console.warn(context.user.userId + '切换小流成功');
+    }).catch(function (error) {
+      common.console.warn(context.user.userId + '切换小流失败');
+      common.console.error(error);
+    });
+  }
+
   function removeSelf(context) {
     if (context.isShow) {
       context.isShow = false;
       var parent = context.$el.parentElement;
       parent.removeChild(context.$el);
+      resizeStream(context, {
+        isMax: false
+      });
     }
   }
 
@@ -77,12 +97,17 @@
       },
       mounted: function () {
         var context = this;
+        var user = context.user;
         context.$nextTick(function () {
           var videoEl = context.$refs.rtcVideo;
           var mediaStream = context.user[RTCTag.RTC].mediaStream;
           videoEl.srcObject = mediaStream;
         });
         DialogHandle.addDialog(user.userId, context);
+        
+        resizeStream(context, {
+          isMax: true
+        });
       },
       methods: {
         cancel: function () {

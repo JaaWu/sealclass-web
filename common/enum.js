@@ -56,7 +56,10 @@
     /* 白板被创建 */
     WHITEBOARD_CREATED: 'whiteboard_created',
     /* 白板被删除 */
-    WHITEBOARD_DELETED: 'whiteboard_deleted'
+    WHITEBOARD_DELETED: 'whiteboard_deleted',
+
+    /* 房间销毁 */
+    ROOM_DESTROY: 'room_destroy'
   };
 
   var SpecialErrorCode = {
@@ -71,7 +74,8 @@
   var RoomAction = {
     JOIN: 1,
     LEAVE: 2,
-    KICK: 3
+    KICK: 3,
+    DESTROY: 4
   };
 
   var UpgradeAction = {
@@ -93,6 +97,12 @@
     CAMERA: 1
   };
 
+  var DevicePlatformType = {
+    ANDROID: 1,
+    IOS: 2,
+    WEB: 3
+  };
+
   var DisplayType = {
     ASSISTANT: 0,
     TEACHER: 1,
@@ -101,18 +111,27 @@
     NONE: 4
   };
 
+  // var Role = {
+  //   ASSISTANT: 1,
+  //   TEACHER: 2,
+  //   STUDENT: 3,
+  //   AUDIENCE: 4,
+  //   1: 'teacher',
+  //   2: 'student',
+  //   3: 'student',
+  //   20: 'student'
+  // };
+
   var Role = {
-    ASSISTANT: 1,
-    TEACHER: 2,
-    STUDENT: 3,
-    AUDIENCE: 4,
-    1: 'assistant',
-    2: 'teacher',
-    3: 'student',
-    4: 'audience'
+    ASSISTANT: 10,
+    TEACHER: 10,
+    STUDENT: 20,
+    AUDIENCE: 30,
+    10: 'teacher',
+    20: 'student'
   };
 
-  var RolePriority = [Role.ASSISTANT, Role.TEACHER, Role.STUDENT, Role.AUDIENCE ];
+  var RolePriority = [Role.ASSISTANT, Role.STUDENT, Role.AUDIENCE ];
 
   var WhiteboardAction = {
     CREATE: 1,
@@ -120,8 +139,9 @@
   };
 
   var StorageKey = {
-    ROOM_ID: 'room',
-    USER_NAME: 'user'
+    ROOM_ID: 'sroom',
+    USER_NAME: 'student',
+    COMPANY_ID: 'school'
   };
 
   var SpeechResultAction = {
@@ -155,11 +175,39 @@
     }
   };
 
+  var Displays = {
+    TEACHER: {
+      ChooseResolution: false,
+      CloseClass: true,
+      InputEmoji: false,
+      LoginAsAudience: false,
+      OperateUser: true,
+      CreateWhiteboard: true,
+      CreateScreenShare: true,
+      DisplaySelf: true,
+      ShowChatAndUserListTab: false,
+      MuteAllLocalMedia: false
+    },
+    STUDENT: {
+      ChooseResolution: false,
+      CloseClass: false,
+      InputEmoji: false,
+      LoginAsAudience: false,
+      OperateUser: false,
+      CreateWhiteboard: false,
+      CreateScreenShare: false,
+      DisplaySelf: false,
+      ShowChatAndUserListTab: false,
+      MuteAllLocalMedia: false
+    }
+  };
+
   RongClass = RongClass || {};
   RongClass.ENUM = {
     Event: Event,
     RTCTag: RTCTag,
     RoomAction: RoomAction,
+    DevicePlatformType: DevicePlatformType,
     DeviceResourceType: DeviceResourceType,
     DisplayType: DisplayType,
     Role: Role,
@@ -171,7 +219,8 @@
     RolePriority: RolePriority,
     UpgradeAction: UpgradeAction,
     DeviceControlAction: DeviceControlAction,
-    DeviceControlType: DeviceControlType
+    DeviceControlType: DeviceControlType,
+    Displays: Displays
   };
 
 })(window.RongClass);

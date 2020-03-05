@@ -33,15 +33,14 @@
           var context = this;
           server.createWhiteboard().then(function (whiteboardId) {
             success(whiteboardId);
-            removeSelf(context);
           }).catch(function (error) {
-            removeSelf(context);
             var errorText = context.locale.errorCode[error.errCode] || error.errDetail;
             dialog.confirm({
               content: errorText
             });
             common.console.log('创建白板失败');
           });
+          removeSelf(context);
         }
       }
     });

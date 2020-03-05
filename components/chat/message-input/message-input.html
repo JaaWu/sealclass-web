@@ -1,6 +1,6 @@
 <div class="rong-message-input">
-  <div class="rong-message-input-panel">
-    <a class="rong-message-panel-emoji" @click="controlEmojiPanel" @mouseleave="hideEmojiPanel">
+  <div class="rong-message-input-panel" v-if="classDisplays.InputEmoji">
+    <a v-if="classDisplays.InputEmoji" class="rong-message-panel-emoji" @click="controlEmojiPanel" @mouseleave="hideEmojiPanel">
       <div class="rong-message-panel-box" v-if="isShowEmojiPanel">
         <component is="emoji-panel" :hide="hideEmojiPanel" :setEmoji="selectEmoji"></component>
       </div>
@@ -12,6 +12,7 @@
       <input type="file">
     </a> -->
   </div>
-  <textarea ref="textarea" v-model="content" @keydown="keydown" class="rong-message-textarea" name="" id="" cols="30" rows="10"></textarea>
+  <!-- 没有选择框时, 输入框上移 -->
+  <textarea :style="classDisplays.InputEmoji ? '' : 'top: 10px'" ref="textarea" v-model="content" @keydown="keydown" class="rong-message-textarea" name="" id="" cols="30" rows="10"></textarea>
   <button class="rong-message-text-send" :disabled="content === ''" @click="sendTextMsg">发送</button>
 </div>

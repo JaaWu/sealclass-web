@@ -25,19 +25,21 @@
     });
   }
 
-  function setRoomStorage(room, user) {
-    storage.set(StorageKey.ROOM_ID, room);
-    storage.set(StorageKey.USER_NAME, user);
+  function setRoomStorage(roomId, userId, schoolId) {
+    storage.set(StorageKey.ROOM_ID, roomId);
+    storage.set(StorageKey.USER_NAME, userId);
+    storage.set(StorageKey.COMPANY_ID, schoolId);
   }
 
-  function getIMParams(token) {
+  function getIMParams(roomInfo) {
+    roomInfo = roomInfo || {};
     var imSetting = RongClass.setting.im;
     return {
-      appKey: imSetting.appKey,
+      appKey: roomInfo.appkey || imSetting.appKey,
       navi: imSetting.navi,
       api: imSetting.api,
       protobuf: imSetting.protobuf,
-      token: token
+      token: roomInfo.imToken
     };
   }
 
@@ -49,12 +51,12 @@
     };
   }
 
-  function initRoom(userName, roomId, isAudience) {
+  function initRoom(userName, roomId, isAudience, context) {
     var roomInfo;
-    return server.joinClassRoom(roomId, userName, isAudience).then(function (info) {
+    return server.joinClassRoom(roomId, userName, isAudience, context).then(function (info) {
       roomInfo = info;
       RongClass.instance.auth = roomInfo;
-      var imParams = getIMParams(roomInfo.imToken);
+      var imParams = getIMParams(roomInfo);
       return dataModel.chat.init(imParams);
     }).then(function (userId) {
       common.console.info({ selfId: userId });
@@ -78,17 +80,31 @@
     });
   }
 
+  function getEntryClassOption(context) {
+    var role = common.getRole();
+    var disableCamera = context.isTeacher ? false : true;
+    return {
+      disableCamera: disableCamera,
+      role: role,
+      phone: context.userName,
+      password: context.password,
+      schoolId: context.schoolId
+    };
+  }
+
   function entryClass(context) {
     context.isLoading = true;
     var roomId = context.roomId,
       userName = context.userName,
-      isAudience = context.isAudience;
-    initRoom(userName, roomId, isAudience).then(function (roomInfo) {
+      schoolId = context.schoolId,
+      isAudience = context.isAudience,
+      option = getEntryClassOption(context);
+    initRoom(userName, roomId, isAudience, option).then(function (roomInfo) {
       context.isLoading = false;
       var loginData = utils.extend(context.$data, { videoEnable: context.videoEnable });
       loginData = utils.extend(loginData, roomInfo);
       RongClass.instance.auth = roomInfo;
-      setRoomStorage(roomId, userName);
+      setRoomStorage(roomId, userName, schoolId);
       toClassPage(loginData);
     }).catch(function (error) {
       context.isLoading = false;
@@ -104,7 +120,7 @@
   }
 
   function filterValueSpace(context, key) {
-    var value = context[key];
+    var value = context[key] || '';
 
     var isHeaderSpace = value[0] === ' ';
     if (isHeaderSpace) {
@@ -121,6 +137,25 @@
 
   function getMethods() {
     return {
+      checkDevices: function () {
+        return utils.getDevices().then(function (devices) {
+          var hasVideoInput = devices.videoInputs.length,
+            hasAudioInput = devices.audioInputs.length,
+            hasAudioOutput = devices.audioOutputs.length;
+          var isError = !(hasVideoInput && hasAudioInput && hasAudioOutput);
+          var errorMsg = '';
+          if (!hasVideoInput) {
+            errorMsg = '未找到摄像头或摄像头已损坏';
+          }
+          if (!hasAudioInput) {
+            errorMsg = '未找到麦克风或麦克风已损坏';
+          }
+          if (!hasAudioOutput) {
+            errorMsg = '未找到音频输出设备';
+          }
+          return isError ? Promise.reject(errorMsg) : Promise.resolve();
+        });
+      },
       keydown: function (e) {
         var currKey = e.keyCode || e.which || e.charCode;
         if (EntryCode === currKey) {
@@ -129,14 +164,26 @@
       },
       entryClass: function () {
         var context = this;
-        if (context.checkValid()) {
-          entryClass(context);
-        }
+        context.checkDevices().catch(function () {
+          return utils.requestDevices(); // 若是因为还未申请麦克风摄像头则先申请
+        }).catch(function () {
+          return context.checkDevices(); // 申请失败则再获取设备一次, 获取到具体是哪个设备有问题
+        }).then(function () {
+          context.checkValid() && entryClass(context);
+        }).catch(function (errorMsg) {
+          return dialog.confirm({
+            content: errorMsg,
+            position: utils.getCenterPosition()
+          });
+        });
       },
       isResolutionSelected: function (resol) {
         var resolution = this.resolution;
         return resol.width === resolution.width
            && resol.height === resolution.height;
+      },
+      isVideoInputSelected: function (val) {
+        return val === this.videoInput;
       },
       filterRoomId: function () {
         filterValueSpace(this, 'roomId');
@@ -157,9 +204,13 @@
           isLoading: false,
           roomId: storage.get(StorageKey.ROOM_ID),
           userName: storage.get(StorageKey.USER_NAME),
+          schoolId: storage.get(StorageKey.COMPANY_ID) || 'emlZvv',
+          password: '123456',
           isAudience: false,
           isVideoClosed: false,
-          resolution: resolutionSetting.default
+          resolution: resolutionSetting.default,
+          videoInput: null,
+          devices: {}
         };
       },
       computed: {
@@ -168,12 +219,25 @@
         },
         resolutionList: function () {
           return resolutionSetting.list;
+        },
+        videoInputs: function () {
+          return this.devices.videoInputs || [];
         }
       },
       mixins: [
         RongClass.mixins.validate
       ],
-      methods: getMethods()
+      methods: getMethods(),
+      mounted: function () {
+        var self = this;
+        utils.getDevices().then(function (devices) {
+          self.devices = devices;
+          var videoInputs = devices.videoInputs;
+          if (videoInputs.length) {
+            self.videoInput = videoInputs[0];
+          }
+        });
+      }
     };
     common.component(options, resolve);
   };

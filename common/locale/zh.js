@@ -2,35 +2,42 @@
   RongClass.locale = RongClass.locale || {};
   RongClass.locale.zh = {
     login: {
-      classId: '输入课堂 ID',
+      schoolId: '机构 ID',
+      classId: '课堂 ID',
       classEmptyError: '课堂 ID 不能为空',
       classLengthError: '数字、字母和汉字, 最多 40 个字符',
       roomLengthError: '数字和字母, 最多 40 个字符',
-      name: '输入姓名',
-      nameEmptyError: '姓名不能为空',
+      name: '手机号',
+      nameEmptyError: '手机号不能为空',
       nameLengthError: '汉字、字母和数字, 最多 10 个字符',
+      password: '密码',
+      passwordEmptyError: '密码不能为空',
+      passwordLengthError: '汉字、字母和数字, 最多 10 个字符',
       listener: '旁听',
       closeVideo: '加入时关闭视频',
       join: '加入课堂',
-      resolution: '分辨率'
+      resolution: '分辨率',
+      passwordError: '字母和数字, 最多 10 个字符, 最少 6 个字符',
+      schoolidError: '字母和数字, 最多 8 个字符, 最少 4 个字符'
     },
     class: {
-      assistant: '助教',
-      teacher: '讲师',
+      assistant: '老师',
+      teacher: '老师',
       student: '学员',
       audience: '旁听者',
-      share: '邀请加入会议',
+      share: '邀请加入课堂',
       setMic: '设置本地麦克风',
       setCamra: '设置本地摄像头',
       setVoice: '设置本地扬声器',
-      quit: '退出会议',
-      setAssistant: '转让助教',
-      setTeacher: '设置讲师',
+      close: '结束课堂',
+      quit: '退出课堂',
+      setAssistant: '转让老师',
+      setTeacher: '设置老师',
       setMemberMic: '设置成员麦克风',
       setMemberCamera: '设置成员摄像头',
       upgrade: '升级成员为学员',
       downgrade: '降级成员为旁听者',
-      kick: '将成员移出会议',
+      kick: '将成员移出课堂',
       openWithOtherBrowser: '请在 Chrome 中使用屏幕共享功能'
     },
     errorCode: {
@@ -61,13 +68,15 @@
       '40004': '用户 ID 不合法',
       '40005': '重复加入房间',
 
+      '50059': '未开通音视频',
+
       /* App Server 错误码提示 */
-      '1': 'App Server 参数错误',
-      '2': 'Auth 过期或错误',
+      '1': '非法的参数',
+      '2': '登录过期或错误',
       '3': '无权限',
       '4': '错误的请求',
-      '255': 'App Server 错误',
-      '10': 'IM Token 错误',
+      '255': '应用服务器错误',
+      '10': '即时通讯 Token 错误',
       '11': '创建房间失败',
       '12': '加入房间失败',
       '13': 'IM 消息发送失败',
@@ -75,7 +84,7 @@
       '21': '用户不在房间内',
       '22': '退出房间失败',
       '23': '老师不在房间内',
-      '24': '助教不在房间内',
+      '24': '老师不在房间内',
       '25': '创建白板失败',
       '26': '白板不存在',
       '27': '删除白板失败',
@@ -83,9 +92,14 @@
       '29': '不能修改自己的角色',
       '30': '令牌无效',
       '31': '超过最大人数',
-      '32': '讲师已存在',
+      '32': '老师已存在',
       '33': '降级失败',
-      '34': '设置讲师角色失败'
+      '34': '设置老师角色失败',
+      '40': '用户或机构不存在',
+      '41': '密码错误',
+      '42': '用户不存在',
+      '43': '版本与角色不符，请联系您的机构',
+      '50': '学校不存在'
     }
   };
 })(window.RongClass);

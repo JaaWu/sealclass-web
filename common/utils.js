@@ -5,6 +5,10 @@
   /* 空函数 */
   function noop() {}
 
+  function deferNoop() {
+    return Promise.resolve();
+  }
+
   function isNull(c) {
     return c === null || c === undefined || c === 'null' || c === 'undefined' || c === '';
   }
@@ -22,6 +26,9 @@
   /* 是否为数组 */
   function isArray(obj) {
     return Object.prototype.toString.call(obj) === '[object Array]';
+  }
+  function isUndefined(obj) {
+    return Object.prototype.toString.call(obj) === '[object Undefined]';
   }
   /* 是否为空对象 */
   function isObjectEmpty(obj) {
@@ -452,10 +459,79 @@
     };
   }
 
+  function getUrlParam(name, url) {
+    if (!url)
+      url = window.location.href;
+    name = name.replace(/[\[\]]/g, "\\$&");
+
+    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)", "i"), results = regex
+      .exec(url);
+
+    if (!results)
+      return null;
+    if (!results[2])
+      return '';
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
+  }
+
+  function requestDevices() {
+    return navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then(function (stream) {
+      stream.getTracks().forEach(function (track) {
+        track.stop && track.stop();
+      });
+      return;
+    });
+  }
+
+  function getDevices() {
+    var videoInputs = [], audioInputs = [], audioOutputs = [];
+    return navigator.mediaDevices.enumerateDevices().then(function (devices) {
+      devices.forEach(function (device) {
+        var isValid = device.label;
+        if (!isValid) {
+          return;
+        }
+        var kind = device.kind;
+        switch(kind) {
+          case 'videoinput':
+            videoInputs.push(device);
+            break;
+          case 'audiooutput':
+            audioOutputs.push(device);
+            break;
+          case 'audioinput':
+            audioInputs.push(device);
+            break;
+          default:
+            break;
+        }
+      });
+      return {
+        videoInputs: videoInputs,
+        audioInputs: audioInputs,
+        audioOutputs: audioOutputs
+      };
+    });
+  }
+
+  function copy(val) {
+    return JSON.parse(JSON.stringify(val));
+  }
+
+  function getUUID() {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+      let r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+      return v.toString(16);
+    });
+  }
+
   RongClass = RongClass || {};
   RongClass.utils = {
     noop: noop,
+    deferNoop: deferNoop,
+    copy: copy,
     isNull: isNull,
+    isUndefined: isUndefined,
     extend: Object.assign,
     isString: isString,
     isObject: isObject,
@@ -481,7 +557,11 @@
     getThumbnailByVideo: getThumbnailByVideo,
     encodeHtmlStr: encodeHtmlStr,
     getAttributeNames: getAttributeNames,
-    getBrowser: getBrowser
+    getBrowser: getBrowser,
+    getUrlParam: getUrlParam,
+    getDevices: getDevices,
+    requestDevices: requestDevices,
+    getUUID: getUUID
   };
 })(window.RongClass, {
   win: window

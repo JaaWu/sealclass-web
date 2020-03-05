@@ -21,7 +21,7 @@
   }
 
   /**
-   * 同意旁观者发言(用户为助教时)
+   * 同意旁观者发言(用户为老师时)
    */
   function approveSpeech(context, user, ticket) {
     var locale = RongClass.instance.locale;
@@ -41,7 +41,7 @@
   }
   
   /**
-   * 拒绝旁观者发言(用户为助教时)
+   * 拒绝旁观者发言(用户为老师时)
    */
   function rejectSpeech(ticket) {
     var locale = RongClass.instance.locale;
@@ -149,7 +149,7 @@
   function watchInviteUpgrade() {
     emitter.on(Event.USER_INVITE_UPGRADE, function (content) {
       var ticket = content.ticket;
-      common.callDialog(content.opUser, '助教邀请您升级为学员', {
+      common.callDialog(content.opUser, '老师邀请您升级为学员', {
         onAccepted: function () {
           approveUpgrade(ticket);
         },
@@ -163,7 +163,7 @@
   function watchControlDevice() {
     emitter.on(Event.USER_INVITE_CONTROL_DEVICE, function (content) {
       var ticket = content.ticket;
-      var text = '助教邀请您打开{type}';
+      var text = '老师邀请您打开{type}';
       var typeText = content.type === DeviceControlType.MICRO ? '麦克风' : '摄像头';
       text = utils.tplEngine(text, { type: typeText });
       common.callDialog(content.opUser, text, {
@@ -178,7 +178,7 @@
   }
 
   /**
-  * 监听旁观者申请发言(用户为助教时)
+  * 监听旁观者申请发言(用户为老师时)
   */
   function watchApplySpeech(context) {
     emitter.on(Event.USER_APPLY_SPEECH, function (content) {

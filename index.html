@@ -4,12 +4,40 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <!-- 升级浏览器提示 -->
+  <script>
+    (function () {
+      var getBrowser = function () {
+        var userAgent = window.navigator.userAgent, version, type;
+        /* 记录各浏览器名字和匹配条件 */
+        var condition = { IE: /rv:([\d.]+)\) like Gecko|MSIE ([\d.]+)/, Edge: /Edge\/([\d.]+)/, Firefox: /Firefox\/([\d.]+)/, Opera: /(?:OPERA|OPR).([\d.]+)/, WeChat: /MicroMessenger/i, QQBrowser: /QQBrowser\/([\d.]+)/, Chrome: /Chrome\/([\d.]+)/, Safari: /Version\/([\d.]+).*Safari/, iOSChrome: /Mobile\/([\d.]+).*Safari/ };
+        for (var key in condition) {
+          if (!condition.hasOwnProperty(key)) continue;
+          var browserContent = userAgent.match(condition[key]);
+          if (browserContent) {
+            type = key;
+            version = browserContent[1] || browserContent[2];
+            break;
+          }
+        }
+        return {
+          type: type ? type : 'UnKonw',
+          version: version ? version : 'UnKonw'
+        };
+      }
+      var browser = getBrowser(), version = parseFloat(browser.version), type = browser.type;
+      if (type !== 'Chrome' || !version || version < 72) {
+        window.location.href = './update.html';
+      }
+      // console.log(browser);
+    })();
+  </script>
 
   <!--#include virtual="attach/favicon.html" -->
   <!--#include virtual="import-tpl.html" -->
   <!--#include virtual="attach/head-static.html" -->
 
-  <title>SealClass</title>
+  <title>融云课堂</title>
 </head>
 <body>
 <div id="sealClass" class="rong-class" @click="fullClick">

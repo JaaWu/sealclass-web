@@ -42,6 +42,16 @@
   <div class="rong-rtc-user-name">
     <span :title="getUserName(user)">{{getUserName(user)}}</span>
   </div>
+
+  <!-- 操作按钮 -->
+  <div v-if="isShowOptBtn && classDisplays.OperateUser && !isSelf" class="rong-rtc-user-opt-box rong-rtc-user-opt-list">
+    <button v-if="!user.isLoading" class="rong-rtc-opt-mic" @click="setMicro" :title="locale.class.setMemberMic"
+      :closed="!isAudioOpened"></button>
+    <button v-if="!user.isLoading" class="rong-rtc-opt-camera" @click="setCamera"
+      :title="locale.class.setMemberCamera" :closed="!isVideoOpened"></button>
+    <button class="rong-rtc-opt-remove" @click="kick" :title="locale.class.kick"></button>
+  </div>
+
   <!-- 身份 -->
   <span class="rong-rtc-user-role" :class="'rong-role-oval-' + user.role">{{role}}</span>
 </div>

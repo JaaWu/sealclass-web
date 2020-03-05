@@ -43,8 +43,18 @@
       }
       emitter.emit(Event.USER_LEFT, content);
       break;
+    case RoomAction.DESTROY:
+      emitter.emit(Event.ROOM_DESTROY, content);
+      break;
     }
   };
+
+  function emitKicked() {
+    emitter.emit(Event.KICKED_OFFLINE_BY_OTHER_CLIENT, {
+      isHideLoading: true,
+      isKeepInRoom: true
+    });
+  }
 
   var MessageHandler = {
     RoomMemberChangeMessage: handleRoomMemberChangeMessage,
@@ -136,6 +146,12 @@
         return emitter.emit(Event.USER_INVITE_CONTROL_DEVICE, content);
       }
       emitter.emit(Event.USER_INVITE_CONTROL_DEVICE_RESULT, content);
+    },
+    NewDeviceMessage: function (message) {
+      var auth = RongClass.instance.auth || {};
+      var isSelfSend = message.senderUserId === auth.userId;
+      var isIMConnected = RongIMClient.getInstance().getCurrentConnectionStatus() === RongIMLib.ConnectionStatus.CONNECTED;
+      isIMConnected && isSelfSend && emitKicked();
     }
   };
 
@@ -151,7 +167,7 @@
           emitter.emit(Event.NETWORK_UNAVAILABLE);
           break;
         case RongIMLib.ConnectionStatus.KICKED_OFFLINE_BY_OTHER_CLIENT:
-          emitter.emit(Event.KICKED_OFFLINE_BY_OTHER_CLIENT);
+          emitKicked();
           break;
         }
         common.console.log('connect change:' + status);
@@ -175,7 +191,9 @@
     RongIMClient.setOnReceiveMessageListener({
       onReceived: function (message) {
         common.console.warn({ receiveMsg: message, isHandle: isRoomMessage(message) });
-        if (isRoomMessage(message)) {
+        var isOfflineMessage = message.offLineMessage;
+        var isNewDeviceMessage = message.messageType === 'NewDeviceMessage';
+        if ((isRoomMessage(message) || isNewDeviceMessage) && !isOfflineMessage) {
           var event = MessageHandler[message.messageType] || utils.noop;
           event(message);
           emitter.emit(Event.MESSAGE_RECEIVED, message);
@@ -203,6 +221,13 @@
     /* 不计数不存储消息注册 */
     isCounted = false;
     isPersited = false;
+
+    // 多端登录踢人
+    messageName = 'NewDeviceMessage';
+    objectName = 'SC:NewDeviceMsg';
+    messageTag = new RongIMLib.MessageTag(isCounted, isPersited);
+    prototypes = ['deviceId', 'deviceType', 'platform', 'updateDt'];
+    RongIMClient.registerMessageType(messageName, objectName, messageTag, prototypes);
 
     // 房间用户改变消息
     messageName = 'RoomMemberChangeMessage';
@@ -253,7 +278,7 @@
     prototypes = ['ticket', 'fromUserId', 'toUserId'];
     RongIMClient.registerMessageType(messageName, objectName, messageTag, prototypes);
 
-    // 转让助教消息
+    // 转让老师消息
     messageName = 'AssistantTransferMessage';
     objectName = 'SC:ATMsg';
     messageTag = new RongIMLib.MessageTag(isCounted, isPersited);
@@ -267,7 +292,7 @@
     prototypes = ['opUserId', 'opUserName', 'action', 'role', 'ticket'];
     RongIMClient.registerMessageType(messageName, objectName, messageTag, prototypes);
 
-    // 定向消息, 助教邀请成员变更设备状态
+    // 定向消息, 老师邀请成员变更设备状态
     messageName = 'ControlDeviceNotifyMessage';
     objectName = 'SC:CDNMsg';
     messageTag = new RongIMLib.MessageTag(isCounted, isPersited);
@@ -328,7 +353,7 @@
 
   function reconnect(callbacks) {
     callbacks = callbacks || utils.noop;
-    var rates = [], reconnectTime = 1000, reconnectCount = 15;
+    var rates = [], reconnectTime = 1000, reconnectCount = 10;
     for (var i = 0; i < reconnectCount; i++) {
       rates.push(reconnectTime);
     }
@@ -486,6 +511,7 @@
     var instance = RongIMClient.getInstance();
     instance.disconnect();
     instance.logout();
+    RongIMClient._instance = null;
   }
   
   var chat = {

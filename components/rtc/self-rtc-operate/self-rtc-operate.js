@@ -49,6 +49,15 @@
             context.hungup(true);
           }
         });
+      },
+      confirmCloseClass: function () {
+        var context = this;
+        RongClass.dialog.confirm({
+          content: '确定要结束本次课程吗 ?',
+          confirmed: function () {
+            context.closeClass(true);
+          }
+        });
       }
     };
   }
@@ -57,7 +66,7 @@
     var options = {
       name: 'self-rtc-operate',
       template: '#rong-template-selfoperate',
-      props: ['userList', 'loginUser', 'hungup'],
+      props: ['userList', 'loginUser', 'hungup', 'closeClass'],
       data: function () {
         return {
         };

@@ -25,16 +25,16 @@
   var RoleMapPrompText = (function () {
     var prompText = {};
     prompText[RoleENUM.ASSISTANT] = {
-      confirm: '确定转让助教 ?',
-      result: '您已将助教转让给 {userName}'
+      confirm: '确定转让老师 ?',
+      result: '您已将老师转让给 {userName}'
     };
     prompText[RoleENUM.AUDIENCE] = {
       confirm: '确定降级该成员 ?',
       result: '您已将 {userName} 降级'
     };
     prompText[RoleENUM.TEACHER] = {
-      confirm: '确定设置成员为讲师 ?',
-      result: '您已将 {userName} 设置为讲师'
+      confirm: '确定设置成员为老师 ?',
+      result: '您已将 {userName} 设置为老师'
     };
     return prompText;
   })();
@@ -75,14 +75,14 @@
       unWatchApplySppechResult(context);
     };
     context.onApplySpeechResult = function (content) {
-      var textTpl = '助教{handle}了您的发言请求';
+      var textTpl = '老师{handle}了您的发言请求';
       var isAccept = content.action === SpeechResultAction.ACCEPT;
       var handleText = isAccept ? '通过' : '拒绝';
       var text = utils.tplEngine(textTpl, { handle: handleText });
       toast(text);
     };
     context.onApplySpeechTicket = function () {
-      var text = '助教无响应, 请稍后再试';
+      var text = '老师无响应, 请稍后再试';
       toast(text);
     };
     emitter.on(Event.USER_APPLY_SPEECH_RESULT, context.onApplySpeechResult);
@@ -193,10 +193,12 @@
     changeRole(RoleENUM.AUDIENCE, this.user);
   }
 
-  function setMicro() {
+  function setMicro(options) {
+    options = options || {};
+    var self = this || {};
     var locale = RongClass.instance.locale;
-    var enable = this.isAudioClosed,
-      userId = this.userId,
+    var enable = self.isAudioClosed || options.enable,
+      userId = self.userId || options.userId,
       confirmTextTpl = '确定要{handle}成员的麦克风吗 ?',
       func = enable ? server.inviteOpenMicro : server.closeMicphone;
     var confirmText = utils.tplEngine(confirmTextTpl, {
@@ -213,10 +215,12 @@
     });
   }
 
-  function setCamera() {
+  function setCamera(options) {
+    options = options || {};
+    var self = this || {};
     var locale = RongClass.instance.locale;
-    var enable = this.isVideoClosed,
-      userId = this.userId,
+    var enable = self.isVideoClosed || options.enable,
+      userId = self.userId || options.userId,
       confirmTextTpl = '确定要{handle}成员的摄像头吗 ?',
       func = enable ? server.inviteOpenCamera : server.closeCamera;
     var confirmText = utils.tplEngine(confirmTextTpl, {
@@ -275,11 +279,12 @@
     })
   }
 
-  function kick() {
+  function kick(option) {
+    option = option || {};
     var locale = RongClass.instance.locale;
-    var userId = this.userId,
-      userName = this.userName;
-    confirmDialog('确定要将成员移除课堂 ?').then(function () {
+    var userId = this.userId || option.userId,
+      userName = this.userName || option.userName;
+    confirmDialog('确定要将成员移出课堂 ?').then(function () {
       return server.kickMember(userId);
     }).then(function () {
       var promps = '您已将 {userName} 踢出房间';
@@ -358,6 +363,12 @@
       methods: getMethods()
     };
     common.component(options, resolve);
+  };
+
+  RongClass.operate = {
+    setMicro: setMicro,
+    setCamera: setCamera,
+    kick: kick
   };
 
 })(window.RongClass, {

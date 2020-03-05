@@ -44,7 +44,8 @@ $loginBaseBackColor: rgb(0, 202, 177);
       text-align: center;
       width: auto;
       height: 13%;
-      margin-top: 16%;
+      // margin-top: 16%;
+      margin-top: 18%;
       margin-bottom: 8%;
       display: inline-block;
       position: relative;
@@ -58,7 +59,7 @@ $loginBaseBackColor: rgb(0, 202, 177);
       display: block;
       width: 100%;
       height: 10%;
-      margin-bottom: 7%;
+      margin-bottom: 6%;
       position: relative;
     }
     .rong-login-input {
@@ -85,7 +86,7 @@ $loginBaseBackColor: rgb(0, 202, 177);
       color: #F44436;
       top: 105%;
       left: 15px;
-      font-size: 73%;
+      font-size: 64%;
     }
   }
   .rong-login-check-box {
@@ -128,7 +129,7 @@ $loginBaseBackColor: rgb(0, 202, 177);
     }
   }
   .rong-login-enter {
-    margin-top: 10%;
+    margin-top: 7%;
     width: 100%;
     height: 10%;
     text-align: center;
@@ -266,6 +267,33 @@ $loginBaseBackColor: rgb(0, 202, 177);
 .rong-login-loading div:nth-child(3) {
   animation-delay: -0.15s;
 }
+.rong-videoinput-wrap {
+  background-image: none;
+  ul {
+    position: relative;
+    background-color: white;
+    box-shadow: 0px 0px 10px 3px rgba(0, 202, 177, 0.2);
+    border-radius: 10px;
+    padding-bottom: 13px;
+  }
+  ul:before {
+    position: absolute;
+    display: inline-block;
+    top: -7px;
+    left: 42px;
+    width: 0;
+    height: 0px;
+    content: '';
+    border-style: solid;
+    border-width: 8px;
+    border-color: #fff #fff transparent transparent;
+    transform: rotate(-45deg);
+    box-shadow: 2px -2px 2px rgba(0, 202, 177, 0.1);
+  }
+  span {
+    margin-right: 0;
+  }
+}
 @keyframes rong-login-loading {
   0% {
     transform: rotate(0deg);
@@ -286,6 +314,6 @@ $loginBaseBackColor: rgb(0, 202, 177);
     font-size: 95%;
   }
   .rong-login-actual .rong-login-content .rong-login-input + span {
-    font-size: 83%;
+    font-size: 78%;
   }
 }

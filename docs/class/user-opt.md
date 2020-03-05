@@ -31,8 +31,8 @@
 | :---------- | :------- | :------- |
 | role | Number | 用户角色 |
 | isLoginUser | Boolean | 是否为登录用户 |
-| isCanSetAssistant | Boolean | 登录用户是否有转让助教权限 |
-| isCanSetTeacher | Boolean | 登录用户是否有设置讲师权限 |
+| isCanSetAssistant | Boolean | 登录用户是否有转让老师权限 |
+| isCanSetTeacher | Boolean | 登录用户是否有设置老师权限 |
 | isCanSetVideoAudio | Boolean | 登录用户是否有操作摄像头/麦克风权限 |
 | isCanDowngrade | Boolean | 登录用户是否有降级学员权限 |
 | isCanUpgrade | Boolean | 登录用户是否有升级学员权限 |
@@ -43,35 +43,35 @@
 
 ##### setAssistant
 
-转让讲师(仅当自己为助教时执行)
+转让老师(仅当自己为老师时执行)
 
 ##### setTeacher
 
-设置讲师(仅当自己为助教时执行)
+设置老师(仅当自己为老师时执行)
 
 ##### setMicro
 
-打开/关闭麦克风(仅当自己为助教时执行)
+打开/关闭麦克风(仅当自己为老师时执行)
 
 ##### setCamera
 
-打开/关闭摄像头(仅当自己为助教时执行)
+打开/关闭摄像头(仅当自己为老师时执行)
 
 ##### downgrade
 
-降级学员(仅当自己为助教时执行)
+降级学员(仅当自己为老师时执行)
 
 ##### inviteUpgrade
 
-邀请学员升级(仅当自己为助教时执行)
+邀请学员升级(仅当自己为老师时执行)
 
 ##### watchInviteUpgradeResult
 
-监听邀请学员升级结果(仅当自己为助教时执行)
+监听邀请学员升级结果(仅当自己为老师时执行)
 
 ##### kick
 
-踢人(仅当自己为助教时执行)
+踢人(仅当自己为老师时执行)
 
 ##### applySpeech
 

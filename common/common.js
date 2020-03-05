@@ -4,6 +4,17 @@
     win = dependencies.win,
     utils = RongClass.utils;
 
+  function getRole() {
+    var ENUM = RongClass.ENUM;
+    var role = utils.getUrlParam('role'); // TODO 待无意义化
+    role = Number(role);
+    var Default = RongClass.ENUM.Role.STUDENT;
+    if (!ENUM.Role[role]) {
+      return Default;
+    }
+    return role || Default;
+  }
+
   function textFormat(content, size) {
     var RongIMEmoji = win.RongIMLib.RongIMEmoji;
     content = utils.encodeHtmlStr(content);
@@ -49,7 +60,7 @@
    * 本地存储
    */
   function storage() {
-    var keyNS = 'rong-class-';
+    var keyNS = 'rong-class-' + getRole();
 
     function isKeyExist(key) {
       // do not depend on value cause of '和0
@@ -107,6 +118,24 @@
     return user.userId || user.id;
   }
 
+  function getVueComputed() {
+    var ENUM = RongClass.ENUM;
+    return {
+      classRole: function () {
+        return getRole();
+      },
+      isTeacher: function () {
+        var role = this.classRole;
+        var isTeacher = role == ENUM.Role.TEACHER;
+        return isTeacher;
+      },
+      classDisplays: function () {
+        var isTeacher = this.isTeacher;
+        return isTeacher ? ENUM.Displays.TEACHER : ENUM.Displays.STUDENT;
+      }
+    };
+  }
+
   /**
    * 封装弹框组件
    * @param {object} options 
@@ -120,7 +149,9 @@
     var methods = {
       getUserName: getUserName
     };
+    var computed = getVueComputed();
     options.methods = utils.extend(methods, options.methods || {});
+    options.computed = utils.extend(computed, options.computed || {});
     var currentMixins = options.mixins || [];
     options.mixins = mixins.concat(currentMixins);
     var Dialog = Vue.extend(options);
@@ -140,9 +171,11 @@
     var methods = {
       getUserName: getUserName
     };
+    var computed = getVueComputed();
     var name = options.name;
     options.mixins = mixins.concat(currentMixins);
     options.methods = utils.extend(methods, options.methods || {});
+    options.computed = utils.extend(computed, options.computed || {});
     resolve(Vue.component(name, options));
   }
   
@@ -246,6 +279,7 @@
       var index = value.indexOf('=');
       formattedParams[value.substring(0, index)] = value.substring(index + 1);
     }
+    formattedParams.type = Number(formattedParams.type);
     return formattedParams;
   }
 
@@ -342,6 +376,17 @@
     callDialogQueue.run();
   }
 
+  function stopAllTrack() {
+    var videoElList = document.querySelectorAll('video');
+    for (var i = 0, max = videoElList.length; i < max; i++) {
+      var videoEl = videoElList[i];
+      var stream = videoEl.srcObject || {};
+      stream.getTracks && stream.getTracks().forEach(function (track) {
+        track.stop();
+      });
+    }
+  }
+
   RongClass = RongClass || {};
   RongClass.common = {
     textFormat: textFormat,
@@ -361,7 +406,10 @@
     sortByRole: sortByRole,
     generateUser: generateUser,
     toast: toast,
-    callDialog: callDialog
+    callDialog: callDialog,
+    getRole: getRole,
+    getVueComputed: getVueComputed,
+    stopAllTrack: stopAllTrack
   };
 })(window.RongClass, {
   Vue: window.Vue,

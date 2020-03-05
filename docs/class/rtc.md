@@ -27,7 +27,7 @@
 |  属性名      | 类型     | 说明     |
 | :---------- | :------- | :------- |
 | showUserList | Array |  展示用户列表 |
-| teacher |  Object | 讲师 |
+| teacher |  Object | 老师 |
 
 > watch
 

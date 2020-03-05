@@ -46,6 +46,20 @@
   }
    */
   var _Cache = {
+    roles: {
+      userRoles: {},
+      set: function (user) {
+        var userId = user.userId || user.id;
+        var role = user.role;
+        if (!utils.isUndefined(role)) {
+          _Cache.roles.userRoles[userId] = role;
+        }
+      },
+      get: function (user) {
+        var userId = user.userId || user.id;
+        return _Cache.roles.userRoles[userId];
+      }
+    },
     users: {
       userList: [],
       addUser: function (user) {
@@ -59,6 +73,7 @@
         }
         var userList = _Cache.users.userList;
         _Cache.users.userList = common.addArrayById(userList, user);
+        _Cache.roles.set(user);
         emitter.emit(Event.USER_LIST_CHANGED, _Cache.users.userList);
       },
       removeUser: function (user) {
@@ -254,11 +269,11 @@
         }
       });
     });
-    /* 监听 助教要求登录用户打开/关闭摄像头 */
+    /* 监听 老师要求登录用户打开/关闭摄像头 */
     emitter.on(Event.USER_CLAIM_CAMERA_CHANGE, function (enable) {
       setMediaEnable(false, enable, true);
     });
-    /* 监听 助教要求登录用户打开/关闭麦克风 */
+    /* 监听 老师要求登录用户打开/关闭麦克风 */
     emitter.on(Event.USER_CLAIM_MIC_CHANGE, function (enable) {
       setMediaEnable(true, enable, true);
     });
@@ -310,14 +325,16 @@
    * @param {String} userId 用户 id
    * @param {Boolean} isAudience 是否为旁听者
    */
-  function joinClassRoom(roomId, userName, isAudience) {
+  function joinClassRoom(roomId, userName, isAudience, options) {
+    options = options || {};
     var url = '/room/join';
     var auth = AuthorizationStorageHandler.get(userName);
-    return Http.post(url, {
+    return Http.post(url, utils.extend({
       roomId: roomId,
       audience: isAudience,
-      userName: userName
-    }, null, {
+      userName: userName,
+      deviceId: utils.getUUID()
+    }, options), null, {
       Authorization: auth
     }).then(function (roomInfo) {
       var authorization = roomInfo.authorization;
@@ -331,13 +348,30 @@
     });
   }
 
+  function destroyClassRoom(roomId) {
+    roomId = roomId || getEnteredRoomId();
+    var selfUser = RongClass.instance.auth,
+      selfUserId = selfUser.userId;
+    var userInfo = selfUser.userInfo || {};
+    var url = '/room/destroy';
+    return Http.post(url, {
+      roomId: roomId,
+      schoolId: userInfo.schoolId
+    }, true).then(function () {
+      AuthorizationStorageHandler.remove(selfUserId);
+      return win.Promise.resolve();
+    });
+  }
+
   function leaveClassRoom(roomId) {
     roomId = roomId || getEnteredRoomId();
     var selfUser = RongClass.instance.auth,
       selfUserId = selfUser.userId;
+    var userInfo = selfUser.userInfo || {};
     var url = '/room/leave';
     return Http.post(url, {
-      roomId: roomId
+      roomId: roomId,
+      schoolId: userInfo.schoolId
     }, true).then(function () {
       AuthorizationStorageHandler.remove(selfUserId);
       return win.Promise.resolve();
@@ -547,7 +581,7 @@
     });
   }
 
-  /* 转让助教给其他人 */
+  /* 转让老师给其他人 */
   function transfer(userId) {
     var roomId = getEnteredRoomId();
     var url = '/room/transfer';
@@ -670,18 +704,27 @@
     return instance && instance.auth;
   }
 
-  function logout() {
+  function logout(option) {
+    option = option || {};
+    var isDestroy = option.isDestroy,
+      isKeepInRoom = option.isKeepInRoom;
     var rtcServer = RongClass.dataModel.rtc,
       chatServer = RongClass.dataModel.chat,
       rtcWindowHandler = RongClass.dialog.rtcWindow.Handler;
     rtcWindowHandler.clear();
     emitter.clear();
-    chatServer.logout();
     _Cache.users.userList = [];
     RongClass.instance.isMuted = false;
-    var promise = win.Promise.all([ leaveClassRoom(), rtcServer.leave() ]);
-    RongClass.instance.auth = null;
-    return promise;
+    window.onRTCClose = utils.noop;
+    var logoutEvent = isDestroy ? destroyClassRoom : leaveClassRoom;
+    if (isKeepInRoom) {
+      logoutEvent = utils.deferNoop;
+    }
+    common.stopAllTrack();
+    return win.Promise.all([logoutEvent(), rtcServer.leave()]).then(function () {
+      chatServer.logout();
+      RongClass.instance.auth = null;  
+    });
   }
 
   var dataModel = {
@@ -689,6 +732,7 @@
     server: {
       joinClassRoom: joinClassRoom,
       leaveClassRoom: leaveClassRoom,
+      destroyClassRoom: destroyClassRoom,
 
       getWhiteBoardList: getWhiteBoardList,
       createWhiteboard: createWhiteboard,
@@ -727,6 +771,7 @@
       getLoginUserId: getLoginUserId,
       getUserList: getUserList,
       getUserById: getUserById,
+      getRoleByUser: _Cache.roles.get,
       checkAuth: checkAuth,
       logout: logout
     }

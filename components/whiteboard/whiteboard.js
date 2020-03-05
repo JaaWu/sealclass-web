@@ -90,6 +90,7 @@
             roomId: auth.roomId,
             authorization: auth.authorization
           });
+          // uri = uri.replace('https://ke.rongcloud.cn/wb/index.html', 'https://imqa.rongcloud.net/web-mess/rongcloud-wb/index.html');
           return uri;
         }
       },

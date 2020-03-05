@@ -91,7 +91,10 @@ $classTopHeight: 60px;
       flex-direction: column;
     }
     .rong-class-rtc-box {
-      
+      .rong-rtc-user .rong-rtc-user-avatar {
+        width: 35px;
+        height: 35px;
+      }
     }
     .rong-class-members-box {
       position: relative;
@@ -109,7 +112,7 @@ $classTopHeight: 60px;
   position: relative;
   .rong-class-logo {
     display: inline-block;
-    width: 170px;
+    width: 200px;
     height: 45px;
     // background-size: 136px auto;
     background-image: url(../img/icons.svg);
@@ -150,6 +153,7 @@ $classTopHeight: 60px;
   .rong-rtc-student-hd {
     min-height: 95px;
     max-height: $studentMaxHeight;
+    max-height: 270px;
     overflow-y: auto;
     position: relative;
     font-size: 0;
@@ -208,6 +212,22 @@ $classTopHeight: 60px;
   .rong-class-tab-selected span {
     color: $greenTextColor;
     border-bottom: 2px solid $greenTextColor;
+  }
+}
+.rong-class-hide-tab {
+  height: 10px;
+  border-bottom: none;
+  .rong-class-chat-rtc-line {
+    position: absolute;
+    top: 10px;
+    width: 95%;
+    left: 50%;
+    transform: translateX(-50%);
+    height: 1px;
+    background-color: $lightGrayColor;
+  }
+  .rong-members-content {
+    top: 23px;
   }
 }
 
@@ -628,6 +648,7 @@ $classTopHeight: 60px;
     // background-color: #EBEFF1;
     line-height: 18px;
     text-align: left;
+    word-break: break-all;
   }
 }
 .rong-rtc-teacher-box {
@@ -708,8 +729,10 @@ $classTopHeight: 60px;
   }
   .rong-rtc-user-name {
     position: absolute;
-    left: 6px;
-    bottom: 5px;
+    // left: 6px;
+    // bottom: 5px;
+    right: 6px;
+    top: 6px;
     color: white;
     font-size: 12px;
     max-width: 60px;
@@ -793,6 +816,7 @@ $classTopHeight: 60px;
 }
 .rong-user-operate {
   position: relative;
+  user-select: none;
   @extend .transCenterY;
   .rong-user-operate-icon {
     cursor: pointer;
@@ -831,6 +855,9 @@ $classTopHeight: 60px;
     height: 37px;
     background-position: 0 -87px;
   }
+  .rong-user-operate-close {
+    background-position: -132px -87px;
+  }
 }
 
 .rong-class-self-operate-box {
@@ -864,7 +891,7 @@ $classTopHeight: 60px;
     cursor: not-allowed;
   }
 
-  // 移交助教
+  // 移交老师
   button.rong-rtc-opt-transfer {
     background-position: 1px -199px;
   }
@@ -872,7 +899,7 @@ $classTopHeight: 60px;
     background-position: 1px -167px;
   }
 
-  // 设置讲师
+  // 设置老师
   button.rong-rtc-opt-set-teacher {
     background-position: -26px -200px;
   }
@@ -1125,7 +1152,7 @@ $classTopHeight: 60px;
   z-index: 11;
   ul li {
     width: 160px;
-    height: 120px;
+    height: 90px;
     background-color: white;
   }
   ul li + li {
@@ -1138,8 +1165,18 @@ $classTopHeight: 60px;
     cursor: pointer;
     span {
       position: absolute;
+      font-size: 14px;
+      color: black;
+      font-weight: 400;
       @extend .transCenter;
     }
+  }
+  .rong-resouce-center-border {
+    width: 73%;
+    height: 53%;
+    border: 1px solid;
+    position: absolute;
+    @extend .transCenter;
   }
 }
 .rong-display-box {
@@ -1211,6 +1248,22 @@ $classTopHeight: 60px;
     color: #9B9B9B;
     padding: 5px 14px;
     border-radius: 2px;
+  }
+}
+
+.rong-rtc-user-opt-list {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  height: 27px;
+  bottom: 0;
+  top: auto;
+  text-align: center;
+  background-color: rgba(1, 1, 1, 0.3);
+  z-index: 20;
+  button {
+    margin: 0 5px;
   }
 }
 

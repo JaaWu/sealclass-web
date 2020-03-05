@@ -149,7 +149,7 @@ server {
 │   │       ├── text 文字消息
 │   │       ├── file 文件消息
 │   │       ├── image 图片消息
-│   │       ├── assistant-transfer 助教转让消息
+│   │       ├── assistant-transfer 老师转让消息
 │   │       └── role-change 角色变化消息
 │   ├── emoji-panel Emoji 选择框
 │   │   ├── emoji-panel.html

@@ -8,11 +8,12 @@
     </div>
     <div class="rong-class-active-box">
       <div class="rong-class-rtc-box">
-        <component is="rong-rtc" :hungup="hungup" :userList="userList" :loginUser="loginUser"></component>
+        <component is="rong-rtc" :hungup="hungup" :closeClass="closeClass" :userList="userList" :loginUser="loginUser"></component>
       </div>
       <div class="rong-class-members-box">
-        <div class='rong-class-tab-box'>
-          <div v-for="tab in tabList" class="rong-class-tab" :class="{ 'rong-class-tab-selected': selectedTab == tab }">
+        <div class='rong-class-tab-box' :class="classDisplays.ShowChatAndUserListTab ? '' : 'rong-class-hide-tab'">
+          <div class="rong-class-chat-rtc-line"></div>
+          <div v-if="classDisplays.ShowChatAndUserListTab" v-for="tab in tabList" class="rong-class-tab" :class="{ 'rong-class-tab-selected': selectedTab == tab }">
             <span @click="selectTab(tab)">{{tab.name}}</span>
           </div>
           <div class="rong-members-content">

@@ -30,7 +30,7 @@
 |  属性名      | 类型     | 说明     |
 | :---------- | :------- | :------- |
 | loginUser | Object |  登录用户 |
-| assistant |  Object | 助教 |
+| assistant |  Object | 老师 |
 | teacher |  Object | 老师 |
 
 > methods
@@ -63,7 +63,7 @@ Vue 路由至登录页面
 
 #### hungupWhenClassKicked
 
-被助教踢出房间时, 退出房间
+被老师踢出房间时, 退出房间
 
 #### toastWhenSelfRoleChanged
 
@@ -71,7 +71,7 @@ Vue 路由至登录页面
 
 #### toastWhenDeviceChanged
 
-监听助教改变自己的资源, 当资源改变时, 弹框提示
+监听老师改变自己的资源, 当资源改变时, 弹框提示
 
 #### toastMemberStatus
 

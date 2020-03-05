@@ -1,5 +1,5 @@
 /*
-* RongRTC.js v3.1.2
+* RongRTC.js v3.2.0
 * Copyright 2020 RongCloud
 * Released under the MIT License.
 */
@@ -880,8 +880,8 @@
       msg: 'This method can only be called by the anchor'
     }, {
       code: 50064,
-      name: 'MUST_PUBLISHED_BEFORE_SETCONFIG',
-      msg: 'Must be published before setConfig'
+      name: 'MUST_PUBLISHED_BEFORE_SETMIXCONFIG',
+      msg: 'Must be published before setMixConfig'
     }, {
       code: 40001,
       name: 'NOT_IN_ROOM',
@@ -1018,6 +1018,19 @@
   var LIVE_ROLE = {
     ANCHOR: 1, // 主播
     AUDIENCE: 2 // 观众
+  };
+
+  /* 直播布局模式 */
+  var LIVE_LAYOUT_MODE = {
+    CUSTOMIZE: 1, // 自定义布局
+    SUSPENSION: 2, // 悬浮
+    ADAPTATION: 3 // 自适应布局
+  };
+
+  /* 直播自定义布局, 视频渲染方式 */
+  var LIVE_RENDER_MODE = {
+    CROP: 1, // 裁剪
+    WHOLE: 2 // 填充
   };
 
   var LIVE_CONFIG_VERSION = 1;
@@ -1735,8 +1748,8 @@
       // 仅直播模式此方法有效
 
     }, {
-      key: 'setConfig',
-      value: function setConfig(config) {
+      key: 'setMixConfig',
+      value: function setMixConfig(config) {
         var client = this.client;
         var rongRTC = client.rongRTC;
         var mode = rongRTC.option.mode;
@@ -1973,9 +1986,11 @@
           body = option.body;
 
       var tpl = '{domain}{path}';
+      var mediaServe = '';
+      mediaServe = getOption().mediaServe;
 
-      urls = option.urls || urls;
-
+      urls = mediaServe || option.urls || urls;
+      // urls = option.urls || urls;
       return utils.deferred(function (resolve, reject) {
         var doRequest = function doRequest(error) {
           var index = indexTools.get();
@@ -2107,24 +2122,6 @@
           });
           context.emit(PeerConnectionEvent.CHANGED, state);
           Logger$1.log(LogTag.ICE, { state: state });
-        },
-        onidpassertionerror: function () {
-          console.log('onidpassertionerror');
-        },
-        onidpvalidationerror: function () {
-          console.log('onidpvalidationerror');
-        },
-        onnegotiationneeded: function () {
-          console.log('onnegotiationneeded');
-        },
-        onpeeridentity: function () {
-          console.log('onpeeridentity');
-        },
-        onsignalingstatechange: function (event) {
-          console.log('onsignalingstatechange', event);
-          if (event.target.connectionState === 'closed') {
-            window.onRTCClose && window.onRTCClose();
-          }
         }
       };
       utils.forEach(events, function (event, name) {
@@ -2828,7 +2825,7 @@
 
         if (pc) {
           pc.close();
-          im.emit(PeerConnectionEvent.PEERCONN_DESTROYED);
+          im.emit(CommonEvent.PEERCONN_DESTROYED);
         }
       }
     }]);
@@ -3929,7 +3926,9 @@
 
             var isVideo = utils.isEqual(StreamType.VIDEO, type);
             var isDisabled = utils.isEqual(state, StreamState.DISBALE);
-            if (isVideo && isDisabled) {
+            var isId = utils.isEqual(stream.id, uri.msid);
+            if (isVideo && isDisabled && isId) {
+              // if (isVideo && isDisabled) {
               var videoTracks = stream.getVideoTracks();
               utils.forEach(videoTracks, function (track) {
                 track.enabled = false;
@@ -4747,6 +4746,7 @@
                 var publishList = response.publishList,
                     urls = response.urls;
 
+                var mediaServe = '//' + response.clusterId;
                 var result = {};
                 urls = urls || {};
                 if (utils.isArray(publishList)) {
@@ -4760,6 +4760,9 @@
                 });
                 self.exchangeHandler(response, user, Message.PUBLISH, desc);
                 result = utils.extend(result, urls);
+                mediaServe && request$2.setOption({
+                  mediaServe: [mediaServe]
+                });
                 urls.configUrl && request$2.setOption({
                   mcuUrls: [getMCUConfigUrl(urls.configUrl)] // 目前 server 要求加入 8080
                 });
@@ -5188,14 +5191,14 @@
         return screen ? getScreen(constraints) : getMS(constraints);
       }
     }, {
-      key: 'setConfig',
-      value: function setConfig(config) {
+      key: 'setMixConfig',
+      value: function setMixConfig(config) {
         var im = this.im,
             option = this.option;
 
         var domains = request$2.getOption().mcuUrls || [];
         if (utils.isEmpty(domains)) {
-          return utils.Defer.reject(ErrorType.Inner.MUST_PUBLISHED_BEFORE_SETCONFIG);
+          return utils.Defer.reject(ErrorType.Inner.MUST_PUBLISHED_BEFORE_SETMIXCONFIG);
         }
 
         var url = Path.LIVE_CONFIG;
@@ -5209,7 +5212,7 @@
         var body = formatLiveConfig(config);
 
         Logger$1.log(LogTag.STREAM_HANDLER, {
-          msg: 'setConfig:request',
+          msg: 'setMixConfig:request',
           headers: headers,
           body: body
         });
@@ -5220,7 +5223,7 @@
           headers: headers
         }).then(function (response) {
           Logger$1.log(LogTag.STREAM_HANDLER, {
-            msg: 'setConfig:response',
+            msg: 'setMixConfig:response',
             headers: headers,
             body: body,
             response: response
@@ -5228,7 +5231,7 @@
           return response;
         }, function (error) {
           Logger$1.log(LogTag.STREAM_HANDLER, {
-            msg: 'setConfig:error',
+            msg: 'setMixConfig:error',
             headers: headers,
             body: body,
             error: error
@@ -5367,7 +5370,7 @@
         self.clear();
         if (pc) {
           pc.close();
-          im.emit(PeerConnectionEvent.PEERCONN_DESTROYED);
+          im.emit(CommonEvent.PEERCONN_DESTROYED);
         }
       }
     }]);
@@ -5500,7 +5503,7 @@
               reject(error);
             });
           case UpEvent.LIVE_CONFIG:
-            return (_stream11 = stream).setConfig.apply(_stream11, toConsumableArray(args)).then(function (result) {
+            return (_stream11 = stream).setMixConfig.apply(_stream11, toConsumableArray(args)).then(function (result) {
               next();
               resolve(result);
             }).catch(function (error) {
@@ -12062,7 +12065,9 @@
     StorageType: StorageType,
     Mode: RTC_MODE,
     LIVE_ROLE: LIVE_ROLE,
-    LIVE_TYPE: LIVE_TYPE
+    LIVE_TYPE: LIVE_TYPE,
+    LIVE_LAYOUT_MODE: LIVE_LAYOUT_MODE,
+    LIVE_RENDER_MODE: LIVE_RENDER_MODE
   });
 
   return RongRTC;

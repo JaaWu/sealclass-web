@@ -3,7 +3,14 @@
     <div class="rong-login-actual">
       <div class="rong-login-content">
         <div class="rong-login-logo">
-          <img src="assets/img/login-logo.png">
+          <img src="assets/img/login-logo.svg">
+        </div>
+        <div class="rong-login-input-box">
+          <input v-model="schoolId" @keydown="keydown" :class="{ 'rong-login-input-error': errors.schoolId }" name="schoolId"
+            class="rong-login-input" type="text" autocomplete="off" :placeholder="locale.login.schoolId"
+            data-rule-schoolid="true" :data-message-schoolid="locale.login.schoolidError"
+            @blur="filterRoomId">
+          <span v-if="errors.schoolId">{{errors.schoolId}}</span>
         </div>
         <div class="rong-login-input-box">
           <input v-model="roomId" @keydown="keydown" :class="{ 'rong-login-input-error': errors.classId }" name="classId" class="rong-login-input" type="text" autocomplete="off"
@@ -22,8 +29,18 @@
           @blur="filterUserName">
           <span v-if="errors.username">{{errors.username}}</span>
         </div>
+        <!-- <div class="rong-login-input-box">
+          <input v-model="password" @keydown="keydown" name="password" :class="{ 'rong-login-input-error': errors.password }"
+            class="rong-login-input" type="password" autocomplete="off" :placeholder="locale.login.password"
+            data-rule-password="true" :data-message-password="locale.login.passwordError"
+            @blur="filterUserName">
+          <span v-if="errors.password">{{errors.password}}</span>
+        </div> -->
         <div class="rong-login-check-box">
-          <input id="isAudience" name="isAudience" type="checkbox" v-model="isAudience"><label for="isAudience"></label><span>{{locale.login.listener}}</span>
+          <template v-if="classDisplays.LoginAsAudience">
+            <input id="isAudience" name="isAudience" type="checkbox" v-model="isAudience"><label
+              for="isAudience"></label><span>{{locale.login.listener}}</span>
+          </template>
           <!-- <input id="isVideoClosed" name="isVideoClosed" type="checkbox" v-model="isVideoClosed"><label for="isVideoClosed"></label><span>{{locale.login.closeVideo}}</span> -->
         </div>
         <div class="rong-login-enter">
@@ -37,7 +54,7 @@
       <img class="rong-login-pic" src="assets/img/login-content.png">
     </div>
 
-    <div class="rong-opt-resolution">
+    <div v-if="classDisplays.ChooseResolution" class="rong-opt-resolution">
       <div class="rong-resolution-wrap">
         <ul>
           <li>{{locale.login.resolution}}</li>
@@ -45,6 +62,19 @@
             <input type="radio" :checked="isResolutionSelected(resolutionValue)">
             <label @click="resolution = resolutionValue"></label>
             <span>{{resolutionValue.width}} * {{resolutionValue.height}}</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="rong-opt-resolution" v-if="videoInputs.length">
+      <div class="rong-resolution-wrap rong-videoinput-wrap">
+        <ul>
+          <li>请选择摄像头</li>
+          <li v-for="videoInputVal in videoInputs">
+            <input type="radio" :checked="isVideoInputSelected(videoInputVal)">
+            <label @click="videoInput = videoInputVal"></label>
+            <span>{{videoInputVal.label}}</span>
           </li>
         </ul>
       </div>

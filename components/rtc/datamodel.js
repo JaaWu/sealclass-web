@@ -66,9 +66,16 @@
     };
   }
 
-  function getSelfMedia(resolution, videoEnable, audioEnable) {
+  function getSelfMedia(resolution, videoEnable, audioEnable, options) {
+    options = options || {};
     resolution = resolution || RongClass.setting.rtc.resolution.default;
     var video = videoEnable ? resolution : false;
+    var device = options.device;
+    if (device) {
+      video = {
+        deviceId: device.deviceId
+      };
+    }
     return RongMedia.get({ audio: !!audioEnable, video: video });
   }
 
@@ -132,18 +139,29 @@
       }
     };
     // TODO 暂时弹框, 后续先在 login 判断
-    var loading = RongClass.dialog.loading({ content: '正在加载屏幕共享插件...' });
-    return RongScreenShare.get().then(function (stream) {
+    var loading = RongClass.dialog.loading({ content: '正在加载屏幕共享...' });
+    return navigator.mediaDevices.getDisplayMedia().then(function (stream) {
       user.stream.mediaStream = stream;
       loading.destroy();
       return rongRTCStream.publish(user);
-    }, function (error) {
-      loading.destroy();
-      return Promise.reject(error);
     }).then(function () {
       emitter.emit(Event.STREAM_ADDED, user);
       return Promise.resolve(user);
+    }).catch(function (error) {
+      loading.destroy();
+      return Promise.reject(error);
     });
+    // return RongScreenShare.get().then(function (stream) {
+    //   user.stream.mediaStream = stream;
+    //   loading.destroy();
+    //   return rongRTCStream.publish(user);
+    // }, function (error) {
+    //   loading.destroy();
+    //   return Promise.reject(error);
+    // }).then(function () {
+    //   emitter.emit(Event.STREAM_ADDED, user);
+    //   return Promise.resolve(user);
+    // });
   }
 
   function unPublishScreenShare() {
@@ -159,7 +177,8 @@
     });
   }
 
-  function publishSelf(resolution, videoEnable, audioEnable) {
+  function publishSelf(resolution, videoEnable, audioEnable, options) {
+    options = options || {};
     var user = {
       id: loginUserId,
       stream: {
@@ -171,12 +190,17 @@
       emitter.emit(Event.STREAM_ADDED, user);
       return Promise.resolve(user);
     }
-    return getSelfMedia(resolution, videoEnable, audioEnable).then(function (stream) {
+    return getSelfMedia(resolution, true, audioEnable, options).then(function (stream) {
+      if (!videoEnable) {
+        stream.getVideoTracks().forEach(function (track) {
+          track.enabled = false;
+        });
+      }
       user.stream.mediaStream = stream;
       return rongRTCStream.publish(user);
     }).then(function () {
       emitter.emit(Event.STREAM_ADDED, user);
-      return Promise.resolve(user);
+        return Promise.resolve(user);
     });
   }
 
@@ -208,7 +232,7 @@
     var Video = rongRTCStream.video;
     var muteFuc = isOpen ? Video.enable : Video.disable;
     var eventKey = isOpen ? Event.VIDEO_ENABLED : Event.VIDEO_DISABLED;
-    user.stream = user[RTCTag.RTC];
+    user.stream = user[RTCTag.RTC] || user.stream;
     return muteFuc(user).then(function () {
       if (user.stream.tag === RTCTag.SCREENSHARE) {
         user.stream = user[RTCTag.RTC];

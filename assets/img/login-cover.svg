@@ -83,7 +83,7 @@
             <rect id="Rectangle-9-Copy" x="0" y="0" width="20" height="20"></rect>
             <g id="Group" stroke-width="1" fill-rule="evenodd">
                 <rect id="Rectangle-30" x="0" y="0" width="20" height="20"></rect>
-                <g id="主持会议" transform="translate(0.000000, 3.000000)">
+                <g id="主持课堂" transform="translate(0.000000, 3.000000)">
                     <rect id="Rectangle-9-Copy" fill="#21C194" transform="translate(16.998481, 7.161660) rotate(-45.000000) translate(-16.998481, -7.161660) " x="16.4984814" y="4.8353804" width="1" height="4.65255892"></rect>
                     <circle id="Oval-2" stroke="#21C194" cx="9" cy="4" r="3.5"></circle>
                     <circle id="Oval-4" fill="#21C194" cx="15.5" cy="5.5" r="1.5"></circle>
@@ -167,7 +167,7 @@
         </g>
         <g id="Group" transform="translate(26.000000, 168.000000)">
             <rect id="Rectangle-30" x="0" y="0" width="20" height="20"></rect>
-            <g id="主持会议" transform="translate(0.000000, 3.000000)">
+            <g id="主持课堂" transform="translate(0.000000, 3.000000)">
                 <rect id="Rectangle-9-Copy" fill="#979797" transform="translate(16.998481, 7.161660) rotate(-45.000000) translate(-16.998481, -7.161660) " x="16.4984814" y="4.8353804" width="1" height="4.65255892"></rect>
                 <circle id="Oval-2" stroke="#979797" cx="9" cy="4" r="3.5"></circle>
                 <circle id="Oval-4" fill="#979797" cx="15.5" cy="5.5" r="1.5"></circle>

@@ -10,24 +10,28 @@
   </div>
 
   <ul class="rong-display-opt" :class="{ 'rong-display-disable': !isResourceEnable }">
-    <li class="rong-display-share">
+    <li v-if="classDisplays.CreateWhiteboard" class="rong-display-share">
       <div class="rong-display-icon-box" @click="isShowResourceList = !isShowResourceList">
         <i></i>
       </div>
-      <span>资源库</span>
+      <span>新建白板</span>
     </li>
-    <li class="rong-display-screenshare" :disabled='isScreenShareDisable' :title="!isChrome ? locale.class.openWithOtherBrowser : ''">
+    <li v-if="classDisplays.CreateScreenShare" class="rong-display-screenshare" :disabled='isScreenShareDisable' :title="!isChrome ? locale.class.openWithOtherBrowser : ''">
       <div class="rong-display-icon-box" @click="displayScreenShare"><i></i></div>
       <span>屏幕共享</span>
     </li>
-    <li class="rong-display-wb">
+    <li v-if="classDisplays.DisplaySelf" class="rong-display-wb">
+      <div class="rong-display-icon-box" @click="displaySelf"><i></i></div>
+      <span>摄像头</span>
+    </li>
+    <!-- <li class="rong-display-wb">
       <div class="rong-display-icon-box" @click="createWhiteboard"><i></i></div>
       <span>新建白板</span>
-    </li>
+    </li> -->
   </ul>
 
   <div v-show="isShowResourceList" class="rong-recent-share-box">
-    <component is="resourceList" :whiteboardList="whiteboardList" :assistant="assistant" :teacher="teacher" :displayRecent="displayRecent"></component>
+    <component is="resourceList" :createWhiteboard="createWhiteboard" :whiteboardList="whiteboardList" :assistant="assistant" :teacher="teacher" :displayRecent="displayRecent"></component>
     <i class="rong-recent-share-mark"></i>
   </div>
 

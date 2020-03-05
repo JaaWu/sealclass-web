@@ -2,6 +2,7 @@
   'use strict';
   var utils = RongClass.utils;
   var Vue = dependencies.Vue;
+  var common = RongClass.common;
 
   /* 输入校验 */
   var validate = (function () {
@@ -21,7 +22,7 @@
         return value.length <= 40;
       },
       namelength: function (value) {
-        return value.length <= 10;
+        return value.length <= 18;
       },
       handlesymbol: function (value) {
         var reg = /^[\u4E00-\u9FA5A-Za-z0-9]+$/;
@@ -30,6 +31,16 @@
       isnotchinese: function (value) {
         var reg = new RegExp('[\\u4E00-\\u9FFF]+', 'g');
         return !reg.test(value);
+      },
+      password: function (value) {
+        value = value || '';
+        var isValidLength = value.length >= 6 && value.length <= 10;
+        return !(/[^\w\\/]/ig.test(value)) && isValidLength; // 只能输入数字、字母
+      },
+      schoolid: function (value) {
+        value = value || '';
+        var isValidLength = value.length >= 4 && value.length <= 8;
+        return !(/[^\w\\/]/ig.test(value)) && isValidLength; // 只能输入数字、字母
       }
     };
 
@@ -117,6 +128,9 @@
         isValid: function () {
           var errors = JSON.parse(JSON.stringify(this.errors));
           return utils.isObjectEmpty(errors);
+        },
+        classRole: function () {
+          return common.getRole();
         }
       },
       mounted: init,

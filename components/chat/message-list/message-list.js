@@ -3,6 +3,7 @@
   var win = dependencies.win,
     RongIMLib = win.RongIMLib,
     dataModel = RongClass.dataModel,
+    utils = RongClass.utils,
     server = dataModel.server;
 
   var common = RongClass.common;
@@ -22,7 +23,7 @@
     'RoomMemberChangeMessage'
   ];
 
-  /* 兼容 server 发讲师变更消息错误 */
+  /* 兼容 server 发老师变更消息错误 */
   function formatRoleChangedToAstTransMsg(message) {
     // if (message.messageType !== 'RoleChangedMessage') {
     //   return message;
@@ -63,8 +64,16 @@
         return SupportMessageList.indexOf(messageType) !== -1;
       },
       getMsgSender: function (message) {
+        var content = message.content || {};
+        var userFromMsg = content.user || {};
         var senderUserId = message.senderUserId;
-        return server.getUserById(senderUserId);
+        var user = server.getUserById(senderUserId);
+        user = utils.copy(user);
+        var role = server.getRoleByUser(user) || user.role;
+        return utils.extend(user, {
+          userName: userFromMsg.name,
+          role: role
+        });
       },
       getMsgSenderName: function (message) {
         var sender = this.getMsgSender(message);

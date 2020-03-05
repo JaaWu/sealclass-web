@@ -1,6 +1,8 @@
 <div class="rong-user-operate" v-if="loginUser">
   <i class="rong-user-operate-icon rong-user-operate-micro" :title="locale.class.setMic" :disabled="isDisabled" :closed="!isAudioOpened" @click="switchAudio"></i>
   <i class="rong-user-operate-icon rong-user-operate-camera" :title="locale.class.setCamra" :disabled="isDisabled" :closed="!isVideoOpened" @click="switchVideo"></i>
-  <i class="rong-user-operate-icon rong-user-operate-volume" :title="locale.class.setVoice" :closed="isMuted" @click="switchVolume"></i>
+  <i v-if="classDisplays.MuteAllLocalMedia" class="rong-user-operate-icon rong-user-operate-volume" :title="locale.class.setVoice" :closed="isMuted" @click="switchVolume"></i>
   <i class="rong-user-operate-icon rong-user-operate-hungup" :title="locale.class.quit" @click="confirmHungup(true)"></i>
+  <i v-if="classDisplays.CloseClass" class="rong-user-operate-icon rong-user-operate-hungup rong-user-operate-close" :title="locale.class.close"
+    @click="confirmCloseClass"></i>
 </div>

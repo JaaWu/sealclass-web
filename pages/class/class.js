@@ -35,9 +35,11 @@
     instance.$router.push({ name: 'login' });
   }
 
-  function hungup(isJump) {
-    createLoading('正在退出 ...');
-    server.logout().then(function () {
+  function hungup(isJump, options) {
+    options = options || {};
+    let isHideLoading = options.isHideLoading;
+    !isHideLoading && createLoading('正在退出 ...');
+    server.logout(options).then(function () {
       destoryLoading();
       isJump && toLoginPage();
     }).catch(function (err) {
@@ -47,10 +49,25 @@
     });
   }
 
-  function confirmHungup(text) {
+  function closeClass(isJump) {
+    createLoading('正在退出 ...');
+    server.logout({
+      isDestroy: true
+    }).then(function () {
+      destoryLoading();
+      isJump && toLoginPage();
+    }).catch(function (err) {
+      destoryLoading();
+      common.console.log({ '退出失败': err });
+      toLoginPage();
+    });
+  }
+
+  function confirmHungup(text, options) {
+    options = options || {};
     var isConnected = RongClass.instance.auth;
     confirmDialog && confirmDialog.destroy();
-    hungup();
+    hungup(options.isJump, options);
     if (isConnected) {
       confirmDialog = dialog.confirm({
         content: text,
@@ -61,32 +78,43 @@
   }
 
   function hungupWhenBeforeUnload(context) {
-    context.beforeunload = function () {
-      hungup();
+    context.beforeunload = function (e) {
+      e.preventDefault();
+      e.returnValue = '';
+      delete e['returnValue'];
     };
+    context.unload = hungup;
     win.addEventListener('beforeunload', context.beforeunload);
+    win.addEventListener('unload', context.unload);
   }
 
   function hungupWhenKickByOther() {
-    emitter.on(Event.KICKED_OFFLINE_BY_OTHER_CLIENT, function () {
-      confirmHungup('您已在其他设备登录');
+    emitter.on(Event.KICKED_OFFLINE_BY_OTHER_CLIENT, function (options) {
+      confirmHungup('您已在其他设备登录', options);
     });
   }
 
   function hungupWhenRTCError() {
     emitter.on(Event.RTC_ERRORED, function () {
-      confirmHungup('网络已断开, 请重新进入房间');
+      confirmHungup('网络已断开, 确保网络正常后, 进入房间');
     });
   }
 
+  var isReconnecting = false;
   function reconnect() {
+    if (isReconnecting) {
+      return;
+    }
+    isReconnecting = true;
     var chatServer = RongClass.dataModel.chat;
     var onError = function (error) {
-      reconnect();
+      isReconnecting = false;
       common.console.error({ '重连失败': error });
+      confirmHungup('网络已断开, 确保网络正常后, 再进入房间');
     };
     chatServer.reconnect({
       onSuccess: function () {
+        isReconnecting = false;
         destoryLoading();
       },
       onTokenIncorrect: onError,
@@ -103,8 +131,15 @@
   }
 
   function hungupWhenClassKicked() {
-    emitter.on(Event.SELF_USER_KICKED, function () {
-      dialog.confirm({ content: '您已被助教踢出课堂' });
+    emitter.on(Event.SELF_USER_KICKED, function (options) {
+      dialog.confirm({ content: '您已被老师踢出课堂' });
+      hungup(true, options);
+    });
+  }
+
+  function hungupWhenClassDestroy() {
+    emitter.on(Event.ROOM_DESTROY, function () {
+      dialog.confirm({ content: '课堂已结束' });
       hungup(true);
     });
   }
@@ -120,10 +155,10 @@
 
   function toastWhenDeviceChanged() {
     emitter.on(Event.USER_CLAIM_MIC_CHANGE, function (enable) {
-      !enable && toast('助教关闭了你的麦克风');
+      !enable && toast('老师关闭了你的麦克风');
     });
     emitter.on(Event.USER_CLAIM_CAMERA_CHANGE, function (enable) {
-      !enable && toast('助教关闭了你的摄像头');
+      !enable && toast('老师关闭了你的摄像头');
     });
   }
 
@@ -144,7 +179,8 @@
       selectTab: function (tab) {
         this.selectedTab = tab;
       },
-      hungup: hungup
+      hungup: hungup,
+      closeClass: closeClass
     }
   }
   var tabList = [
@@ -186,6 +222,7 @@
       methods: getMethods(),
       destroyed: function () {
         win.removeEventListener('beforeunload', this.beforeunload);
+        win.removeEventListener('unload', this.unload);
       },
       mounted: function () {
         var context = this;
@@ -200,11 +237,26 @@
 
         hungupWhenBeforeUnload(context);
         hungupWhenClassKicked();
+        hungupWhenClassDestroy();
         hungupWhenKickByOther();
         hungupWhenRTCError();
         toastWhenSelfRoleChanged();
         toastWhenDeviceChanged();
         reconnectWhenNetworkUnavailable();
+
+        // 关闭笔记本盖子的临时解决方案
+        window.onRTCClose = function () {
+          var reload = function () {
+            win.removeEventListener('beforeunload', context.beforeunload);
+            win.removeEventListener('unload', context.unload);
+            window.location.reload();
+          };
+          dialog.confirm({
+            content: '网络异常, 请确保网络稳定后重新加载页面',
+            confirmed: reload,
+            canceled: reload
+          });
+        };
       }
     };
     common.component(options, resolve);

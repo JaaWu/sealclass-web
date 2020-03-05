@@ -14,7 +14,7 @@
 | :---------- | :------- | :------- |
 | loginUser | Object |  登录用户 |
 | userList |  Array | 房间人员列表 |
-| assistant |  Object | 助教 |
+| assistant |  Object | 老师 |
 | teacher |  Object | 老师  |
 
 > data

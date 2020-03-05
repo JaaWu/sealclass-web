@@ -80,11 +80,17 @@ html, body {
   .rong-role-oval-1 {
     background-color: $managerColor;
   }
+  .rong-role-oval-10 {
+    background-color: $teacherColor;
+  }
 
   .rong-role-oval-2 {
     background-color: $teacherColor;
   }
   .rong-role-oval-3 {
+    display: none;
+  }
+  .rong-role-oval-20 {
     display: none;
   }
 }

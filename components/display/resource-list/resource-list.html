@@ -1,13 +1,20 @@
 <div class="rong-recent-share-list">
   <ul>
-    <li v-if="displayedUser" @click="displayUser">
+    <!-- <li v-if="displayedUser" @click="displayUser">
       <component is="rtc-user" :user="displayedUser" :isBanZoom="true" :isShowThumbnail="true"></component>
-    </li>
-    <li v-for="whiteboard, index in whiteboardList" @click="displayWB(whiteboard)">
+    </li> -->
+    <li>
       <div class="rong-resource-list-whiteboard">
-        <span>
-          白板 {{index + 1}}
-        </span>
+        <div @click="createWhiteboard" class="rong-resouce-center-border"><span>新建白板</span></div>
+      </div>
+    </li>
+    <li v-for="whiteboard, index in whiteboardList">
+      <div class="rong-resource-list-whiteboard">
+        <div @click="displayWB(whiteboard)" class="rong-resouce-center-border">
+          <span>
+            白板 {{index + 1}}
+          </span>
+        </div>
       </div>
     </li>
   </ul>

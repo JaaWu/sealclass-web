@@ -45,6 +45,14 @@
     })
   }
 
+  function hasMessageInList(list, message) {
+    var messageUId = message.messageUId;
+    var matchMessageList = list.filter(function (msg) {
+      return msg.messageUId === messageUId;
+    });
+    return matchMessageList.length;
+  }
+
   function getMethods() {
     return {
       sendText: function (content) {
@@ -83,7 +91,9 @@
       mounted: function () {
         var context = this;
         emitter.on(Event.MESSAGE_RECEIVED, function (message) {
-          // filter
+          if (hasMessageInList(context.messageList, message)) {
+            return;
+          }
           context.messageList.push(message);
           scrollToBottom();
         });
