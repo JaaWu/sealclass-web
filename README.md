@@ -20,7 +20,7 @@
 server {
   listen 80;
   server_name  www.test.com;
-  location / {
+  location /sealclass-web {
     ssi on;
     root /usr/local/sealclass-web;
   }
