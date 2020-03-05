@@ -27,7 +27,11 @@ server {
 }
 ```
 
-6、启动 sealclass-web/index.html
+6、启动
+
+学生端: https://域名/sealclass-web/index.html
+
+老师端: https://域名/sealclass-web/index.html/?role=10
 
 ## 基础架构
 
