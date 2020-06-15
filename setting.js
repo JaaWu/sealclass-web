@@ -1,6 +1,6 @@
 (function (win) {
   var setting = {
-    version: '2.0.0',
+    version: '2.1.0',
     lang: 'zh',
     // server: 'https://120.92.22.211/sealclass', // SealClass Server 地址
     server: 'https://ke.rongcloud.cn/api/v2', // 线上 Server 地址
