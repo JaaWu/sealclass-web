@@ -3,7 +3,7 @@
     <!-- <li v-if="displayedUser" @click="displayUser">
       <component is="rtc-user" :user="displayedUser" :isBanZoom="true" :isShowThumbnail="true"></component>
     </li> -->
-    <li>
+    <li v-if="needNewWhiteboard">
       <div class="rong-resource-list-whiteboard">
         <div @click="createWhiteboard" class="rong-resouce-center-border"><span>新建白板</span></div>
       </div>

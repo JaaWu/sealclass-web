@@ -2,7 +2,8 @@
   var setting = {
     version: '2.0.0',
     lang: 'zh',
-    server: 'https://ke.rongcloud.cn/api/v2', // SealClass Server 地址
+    // server: 'https://120.92.22.211/sealclass', // SealClass Server 地址
+    server: 'https://ke.rongcloud.cn/api/v2', // 线上 Server 地址
     im: {
       appKey: 'pkfcgjstp8888',
       // navi: 'https://navqa.cn.ronghub.com', // navi 地址, 私有云可不填
@@ -33,7 +34,11 @@
       toastTime: 30000,
       maxPersonCount: 16
     },
-    isDebug: true
+    whiteboard: {
+      url: 'new-whiteboard/index.html' // 白板相对路径
+    },
+    isDebug: true,
+    isPrivate: false
   };
 
   win.RongClass = win.RongClass || {

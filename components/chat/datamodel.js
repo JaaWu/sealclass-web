@@ -354,6 +354,11 @@
   function reconnect(callbacks) {
     callbacks = callbacks || utils.noop;
     var rates = [], reconnectTime = 1000, reconnectCount = 10;
+  
+    var reconnectUrl = utils.tplEngine('{url}?d={timestamp}', {
+      url: RongClass.setting.im.reconnectUrl,
+      timestamp: Date.now() // 加时间戳防止重连走缓存
+    })
     for (var i = 0; i < reconnectCount; i++) {
       rates.push(reconnectTime);
     }
@@ -361,7 +366,7 @@
       // 默认 false, true 启用自动重连，启用则为必选参数
       auto: true,
       // 网络嗅探地址 [http(s)://]cdn.ronghub.com/RongIMLib-2.2.6.min.js 可选
-      url: RongClass.setting.im.reconnectUrl,
+      url: reconnectUrl,
       // 重试频率 [100, 1000, 3000, 6000, 10000, 18000] 单位为毫秒，可选
       rate: rates
     };

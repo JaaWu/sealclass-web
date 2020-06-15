@@ -10,7 +10,7 @@
     var options = {
       name: 'recentShare',
       template: '#rong-template-resource-list',
-      props: ['whiteboardList', 'assistant', 'teacher', 'displayRecent', 'createWhiteboard'],
+      props: ['whiteboardList', 'assistant', 'teacher', 'displayRecent', 'createWhiteboard', 'needNewWhiteboard'],
       data: function () {
         return {
         };
@@ -18,7 +18,7 @@
       computed: {
         displayedUser: function () {
           return this.teacher || this.assistant;
-        }
+        },
       },
       components: {
         'rtc-user': components.rtcUser

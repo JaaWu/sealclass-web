@@ -6,7 +6,8 @@
     ENUM = RongClass.ENUM,
     DisplayType = ENUM.DisplayType,
     RoleENUM = ENUM.Role,
-    Event = ENUM.Event;
+    Event = ENUM.Event,
+    isPrivate = RongClass.setting.isPrivate;
   
   var emitter = utils.EventEmitter,
     server = RongClass.dataModel.server,
@@ -18,7 +19,7 @@
     };
 
   function displayRecent(context, displayParams) {
-    server.display(displayParams).then(function () {
+    server.display(displayParams).then(function (data) {
       context.display = displayParams;
       context.isScreenSharePublished = displayParams.type === DisplayType.SCREEN;
     });
@@ -114,14 +115,22 @@
       },
       createWhiteboard: function () {
         var context = this;
+        this.isShowResourceList = false;
         dialog.createWB({
           success: function (whiteboardId) {
-            context.whiteboardList.push({ whiteboardId: whiteboardId });
             var display = {
               type: DisplayType.WHITEBOARD,
-              uri: whiteboardId
+              uri: whiteboardId,
+              whiteId: whiteboardId.id,
+              whiteToken: whiteboardId.roomToken
             };
             displayRecent(context, display);
+            if(!isPrivate) {
+              context.whiteboardList.push({ whiteboardId: whiteboardId.id });
+            }else {
+              context.whiteboardList.push({ whiteboardId: whiteboardId });
+            }
+            console.log('dispaly.js, createWhiteboard', whiteboardId)
           }
         });
       },
@@ -166,7 +175,8 @@
           display: DefaultDisplay,
           whiteboardList: [],
           isShowResourceList: false,
-          isScreenSharePublished: false
+          isScreenSharePublished: false,
+          needNewWhiteboard: true
         };
       },
       computed: {
@@ -222,6 +232,13 @@
         },
         userList: function (newUser, oldUser) {
           console.log('userList changed', JSON.parse(JSON.stringify(newUser)));
+        },
+        whiteboardList: function() {
+          if(this.whiteboardList.length > 0) {
+            this.needNewWhiteboard = false;
+          }else {
+            this.needNewWhiteboard = true;
+          }
         }
       },
       mounted: function () {

@@ -20,22 +20,20 @@
 server {
   listen 80;
   server_name  www.test.com;
-  location /sealclass-web {
+  location / {
     ssi on;
     root /usr/local/sealclass-web;
   }
 }
 ```
 
-6、启动
-
-学生端: https://域名/sealclass-web/index.html
-
-老师端: https://域名/sealclass-web/index.html/?role=10
+6、启动 sealclass-web/index.html
 
 ## 基础架构
 
-项目使用原生 Vue.js 开发
+1、项目使用原生 Vue.js 开发
+
+2、白板: 采用第三方 herewhite , 集成文档[https://developer.netless.link/](https://developer.netless.link/)
 
 注: 未使用 webpack、vue-cli、jQuery 等工具
 
@@ -188,6 +186,7 @@ server {
 │   └── rtc-window 视频大窗口弹框
 │       ├── rtc-window.html
 │       └── rtc-window.js
+├── new-whiteboard 第三方白板模块
 ├── setting.js 配置项
 └── index.html 首页
 ```

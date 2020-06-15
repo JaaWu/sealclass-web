@@ -31,6 +31,7 @@
         },
         createBlankWb: function () {
           var context = this;
+          //TODO 需要兼容私有云创建
           server.createWhiteboard().then(function (whiteboardId) {
             success(whiteboardId);
           }).catch(function (error) {
